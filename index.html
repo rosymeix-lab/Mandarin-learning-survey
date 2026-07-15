@@ -7,1611 +7,993 @@
     <style>
         :root {
             --primary: #c41e3a;
+            --primary-light: #e8364f;
             --primary-dark: #8b0000;
-            --secondary: #f5e6d3;
             --accent: #d4a574;
+            --warm: #f5e6d3;
             --text: #2c2c2c;
-            --text-light: #5a5a5a;
-            --bg: #faf7f2;
+            --text-secondary: #6b7280;
+            --text-light: #9ca3af;
+            --bg: #f8f6f3;
             --white: #ffffff;
-            --border: #e0d5c7;
-            --success: #4a7c59;
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.12);
-            --radius: 12px;
-            --radius-sm: 8px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --border: #e5e1dc;
+            --border-light: #f0ece7;
+            --success: #22c55e;
+            --error: #ef4444;
+            --shadow-xs: 0 1px 3px rgba(0,0,0,0.04);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.10);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --radius-xs: 6px;
+            --ease: cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans SC', 'Helvetica Neue', sans-serif;
             background: var(--bg);
             color: var(--text);
-            line-height: 1.6;
-            min-height: 100vh;
-            padding: 20px;
-            background-image: radial-gradient(circle at 20% 20%, rgba(196, 30, 58, 0.03) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(212, 165, 116, 0.05) 0%, transparent 50%);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
         }
+        .page-wrapper { min-height: 100vh; padding: 24px 16px 60px; }
+        .container { max-width: 720px; margin: 0 auto; }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
+        /* ===== HERO ===== */
+        .hero {
+            text-align: center; padding: 48px 32px 40px;
+            background: linear-gradient(135deg, #c41e3a 0%, #a01830 50%, #8b0000 100%);
+            border-radius: 20px; margin-bottom: 24px;
+            position: relative; overflow: hidden;
+            box-shadow: 0 8px 32px rgba(196,30,58,0.25);
         }
-
-        /* Header */
-        .header {
-            text-align: center;
-            padding: 40px 20px 30px;
-            background: var(--white);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            margin-bottom: 24px;
-            border-top: 4px solid var(--primary);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(196, 30, 58, 0.02) 0%, transparent 70%);
+        .hero::before {
+            content: ''; position: absolute; top: -60%; left: -30%;
+            width: 160%; height: 180%;
+            background: radial-gradient(ellipse, rgba(255,255,255,0.08) 0%, transparent 70%);
             pointer-events: none;
         }
-
-        .header-icon {
-            font-size: 3rem;
-            margin-bottom: 12px;
-            animation: float 3s ease-in-out infinite;
+        .hero-icon {
+            font-size: 3.2rem; margin-bottom: 16px; display: inline-block;
+            animation: heroFloat 4s ease-in-out infinite; position: relative; z-index: 1;
         }
-
-        @keyframes float {
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-8px);
-            }
+        @keyframes heroFloat {
+            0%,100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(3deg); }
         }
+        .hero h1 { font-size: 1.75rem; font-weight: 800; color: #fff; margin-bottom: 10px; letter-spacing: -0.5px; position: relative; z-index: 1; }
+        .hero p { font-size: 0.95rem; color: rgba(255,255,255,0.85); max-width: 480px; margin: 0 auto; position: relative; z-index: 1; line-height: 1.6; }
 
-        .header h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary-dark);
-            margin-bottom: 8px;
-            letter-spacing: -0.3px;
-        }
-
-        .header p {
-            font-size: 0.95rem;
-            color: var(--text-light);
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        /* Language Selector */
-        .language-selector {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 20px;
-        }
-
+        /* ===== LANG BAR ===== */
+        .lang-bar { display: flex; justify-content: center; gap: 6px; margin-top: 24px; position: relative; z-index: 1; flex-wrap: wrap; }
         .lang-btn {
-            padding: 8px 16px;
-            border: 2px solid var(--border);
-            background: var(--white);
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transition: var(--transition);
-            color: var(--text-light);
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 7px 14px; background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(8px); border: 1.5px solid rgba(255,255,255,0.25);
+            border-radius: 20px; color: rgba(255,255,255,0.85);
+            font-size: 0.8rem; font-weight: 600; cursor: pointer;
+            transition: all 0.25s var(--ease); user-select: none;
+        }
+        .lang-btn:hover { background: rgba(255,255,255,0.25); color: #fff; }
+        .lang-btn.active { background: #fff; color: var(--primary); border-color: #fff; box-shadow: 0 2px 12px rgba(0,0,0,0.15); }
+        .lang-flag { font-size: 1.05rem; }
+
+        /* ===== PROGRESS ===== */
+        .progress-wrap {
+            background: var(--white); border-radius: var(--radius-sm);
+            padding: 14px 18px; margin-bottom: 20px; box-shadow: var(--shadow-sm);
+            display: flex; align-items: center; gap: 14px;
+        }
+        .progress-track { flex: 1; height: 6px; background: var(--border-light); border-radius: 8px; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--primary), var(--accent)); border-radius: 8px; transition: width 0.6s var(--ease); }
+        .progress-pct { font-size: 0.82rem; font-weight: 700; color: var(--primary); min-width: 36px; text-align: right; }
+
+        /* ===== CARD ===== */
+        .card {
+            background: var(--white); border-radius: var(--radius); padding: 0;
+            margin-bottom: 20px; box-shadow: var(--shadow-sm); overflow: hidden;
+            transition: box-shadow 0.3s var(--ease);
+            opacity: 0; transform: translateY(16px);
+            animation: cardIn 0.45s var(--ease) forwards;
+        }
+        .card:hover { box-shadow: var(--shadow-md); }
+        .card:nth-child(1) { animation-delay: 0.05s; }
+        .card:nth-child(2) { animation-delay: 0.1s; }
+        .card:nth-child(3) { animation-delay: 0.15s; }
+        .card:nth-child(4) { animation-delay: 0.2s; }
+        .card:nth-child(5) { animation-delay: 0.25s; }
+        .card:nth-child(6) { animation-delay: 0.3s; }
+        .card:nth-child(7) { animation-delay: 0.35s; }
+        @keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
+        .card-header { padding: 22px 24px 14px; border-bottom: 1px solid var(--border-light); }
+        .card-header-inner { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+        .card-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+        .card-icon.red { background: rgba(196,30,58,0.08); }
+        .card-icon.amber { background: rgba(245,158,11,0.08); }
+        .card-icon.blue { background: rgba(59,130,246,0.08); }
+        .card-icon.green { background: rgba(34,197,94,0.08); }
+        .card-icon.purple { background: rgba(168,85,247,0.08); }
+        .card-icon.teal { background: rgba(20,184,166,0.08); }
+        .card-title { font-size: 1.05rem; font-weight: 700; color: var(--text); }
+        .card-sub { font-size: 0.82rem; color: var(--text-secondary); padding-left: 46px; }
+        .card-body { padding: 20px 24px 24px; }
+
+        /* ===== QUESTION ===== */
+        .q-block { margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px solid var(--border-light); }
+        .q-block:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+        .q-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+        .q-num {
+            font-size: 0.72rem; font-weight: 700; color: var(--white);
+            background: var(--primary); border-radius: 6px; padding: 2px 8px;
+            letter-spacing: 0.3px; flex-shrink: 0; position: relative; top: -1px;
+        }
+        .q-text { font-size: 0.92rem; font-weight: 600; color: var(--text); flex: 1; }
+        .q-hint {
+            font-size: 0.78rem; color: var(--text-light); font-weight: 500;
+            background: var(--bg); padding: 2px 10px; border-radius: 10px; white-space: nowrap;
         }
 
-        .lang-btn:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-            background: rgba(196, 30, 58, 0.03);
+        /* ===== OPTIONS ===== */
+        .opts { display: flex; flex-direction: column; gap: 6px; }
+        .opt {
+            display: flex; align-items: center; gap: 10px;
+            padding: 11px 14px; background: var(--bg); border: 1.5px solid transparent;
+            border-radius: var(--radius-sm); cursor: pointer;
+            transition: all 0.2s var(--ease); user-select: none;
         }
+        .opt:hover { background: rgba(196,30,58,0.03); border-color: rgba(196,30,58,0.12); }
+        .opt.checked { background: rgba(196,30,58,0.05); border-color: var(--primary); box-shadow: 0 0 0 1px rgba(196,30,58,0.1); }
+        .opt input[type="checkbox"], .opt input[type="radio"] { width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer; flex-shrink: 0; }
+        .opt-text { font-size: 0.88rem; color: var(--text); cursor: pointer; flex: 1; }
+        .opt-icon { font-size: 1rem; flex-shrink: 0; opacity: 0.5; transition: opacity 0.2s; }
+        .opt.checked .opt-icon { opacity: 1; }
 
-        .lang-btn.active {
-            background: var(--primary);
-            color: var(--white);
-            border-color: var(--primary);
-            box-shadow: 0 4px 12px rgba(196, 30, 58, 0.3);
+        /* ===== OTHER INPUT ===== */
+        .other-row { max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.3s var(--ease), opacity 0.25s var(--ease), margin 0.25s var(--ease); margin-top: 0; }
+        .other-row.open { max-height: 60px; opacity: 1; margin-top: 8px; }
+        .other-row input {
+            width: 100%; padding: 10px 14px; border: 1.5px solid var(--border);
+            border-radius: var(--radius-xs); font-size: 0.88rem; font-family: inherit;
+            transition: border-color 0.2s, box-shadow 0.2s; background: var(--white);
         }
+        .other-row input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(196,30,58,0.08); }
 
-        .lang-flag {
-            font-size: 1.1rem;
+        /* ===== TEXTAREA ===== */
+        .ta-box textarea {
+            width: 100%; padding: 12px 14px; border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm); font-size: 0.88rem; font-family: inherit;
+            resize: vertical; min-height: 80px; transition: border-color 0.2s, box-shadow 0.2s;
+            background: var(--white); line-height: 1.6;
         }
+        .ta-box textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(196,30,58,0.08); }
+        .ta-box textarea::placeholder { color: var(--text-light); }
 
-        /* Progress Bar */
-        .progress-container {
-            background: var(--white);
-            border-radius: var(--radius);
-            padding: 16px 20px;
-            margin-bottom: 20px;
-            box-shadow: var(--shadow);
-            display: flex;
-            align-items: center;
-            gap: 16px;
+        /* ===== SUBMIT ===== */
+        .submit-area { text-align: center; padding: 32px 24px; background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+        .btn-submit {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 14px 40px; background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff; border: none; border-radius: 28px;
+            font-size: 0.95rem; font-weight: 700; cursor: pointer;
+            transition: all 0.25s var(--ease);
+            box-shadow: 0 4px 16px rgba(196,30,58,0.3); letter-spacing: 0.3px;
         }
+        .btn-submit:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(196,30,58,0.4); }
+        .btn-submit:active:not(:disabled) { transform: translateY(0); }
+        .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+        .btn-submit .spinner {
+            display: none; width: 18px; height: 18px;
+            border: 2.5px solid rgba(255,255,255,0.3); border-top-color: #fff;
+            border-radius: 50%; animation: spin 0.7s linear infinite;
+        }
+        .btn-submit.loading .spinner { display: inline-block; }
+        .btn-submit.loading .btn-icon { display: none; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .submit-sub { font-size: 0.8rem; color: var(--text-light); margin-top: 12px; }
 
-        .progress-bar-wrapper {
-            flex: 1;
-            height: 8px;
-            background: var(--border);
-            border-radius: 10px;
-            overflow: hidden;
+        /* ===== STATUS BANNER ===== */
+        .status-banner {
+            display: none; padding: 14px 18px; border-radius: var(--radius-sm);
+            margin-bottom: 16px; font-size: 0.88rem; font-weight: 600;
+            align-items: center; gap: 10px; animation: slideDown 0.3s var(--ease);
         }
+        .status-banner.show { display: flex; }
+        .status-banner.success { background: #f0fdf4; color: #16a34a; border: 1.5px solid #bbf7d0; }
+        .status-banner.error { background: #fef2f2; color: #dc2626; border: 1.5px solid #fecaca; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
 
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            border-radius: 10px;
-            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            width: 0%;
+        /* ===== MODAL ===== */
+        .overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+            z-index: 999; justify-content: center; align-items: center;
+            padding: 20px; backdrop-filter: blur(6px);
         }
+        .overlay.show { display: flex; }
+        .modal-box {
+            background: var(--white); border-radius: var(--radius);
+            padding: 32px 28px; max-width: 600px; width: 100%;
+            max-height: 80vh; overflow-y: auto; box-shadow: var(--shadow-lg);
+            animation: modalPop 0.3s var(--ease);
+        }
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.92) translateY(12px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .modal-box h2 { text-align: center; color: var(--primary-dark); font-size: 1.3rem; margin-bottom: 20px; }
+        .result-row { padding: 10px 14px; background: var(--bg); border-radius: var(--radius-xs); margin-bottom: 8px; font-size: 0.88rem; }
+        .result-row strong { color: var(--primary-dark); display: block; margin-bottom: 4px; }
+        .result-row span { color: var(--text-secondary); }
+        .modal-close {
+            display: block; margin: 20px auto 0; padding: 10px 32px;
+            background: var(--primary); color: #fff; border: none;
+            border-radius: 20px; cursor: pointer; font-weight: 600;
+            font-size: 0.88rem; transition: background 0.2s;
+        }
+        .modal-close:hover { background: var(--primary-dark); }
 
-        .progress-text {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--primary);
-            white-space: nowrap;
-            min-width: 50px;
-            text-align: right;
-        }
-
-        /* Sections */
-        .section {
-            background: var(--white);
-            border-radius: var(--radius);
-            padding: 28px 24px;
-            margin-bottom: 20px;
-            box-shadow: var(--shadow);
-            border-left: 4px solid transparent;
-            transition: var(--transition);
-            animation: fadeInUp 0.5s ease forwards;
-            opacity: 0;
-        }
-
-        .section:hover {
-            border-left-color: var(--primary);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .section:nth-child(1) {
-            animation-delay: 0.05s;
-        }
-        .section:nth-child(2) {
-            animation-delay: 0.1s;
-        }
-        .section:nth-child(3) {
-            animation-delay: 0.15s;
-        }
-        .section:nth-child(4) {
-            animation-delay: 0.2s;
-        }
-        .section:nth-child(5) {
-            animation-delay: 0.25s;
-        }
-        .section:nth-child(6) {
-            animation-delay: 0.3s;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .section-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--primary-dark);
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .section-title .icon {
-            font-size: 1.4rem;
-        }
-
-        .section-subtitle {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            margin-bottom: 20px;
-            padding-left: 2px;
-        }
-
-        /* Questions */
-        .question {
-            margin-bottom: 24px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .question:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-        .question-label {
-            font-weight: 600;
-            font-size: 0.95rem;
-            color: var(--text);
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        .question-hint {
-            font-size: 0.8rem;
-            color: var(--text-light);
-            font-weight: 400;
-            margin-left: 8px;
-        }
-
-        /* Options */
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .option {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 14px;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            transition: var(--transition);
-            border: 1.5px solid transparent;
-            background: var(--bg);
-            position: relative;
-        }
-
-        .option:hover {
-            background: rgba(196, 30, 58, 0.04);
-            border-color: rgba(196, 30, 58, 0.15);
-        }
-
-        .option.selected {
-            background: rgba(196, 30, 58, 0.06);
-            border-color: var(--primary);
-        }
-
-        .option input[type="checkbox"],
-        .option input[type="radio"] {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--primary);
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-
-        .option-label {
-            font-size: 0.9rem;
-            cursor: pointer;
-            flex: 1;
-            user-select: none;
-        }
-
-        /* Other input */
-        .other-input {
-            display: none;
-            margin-top: 8px;
-            margin-left: 28px;
-            animation: slideDown 0.2s ease;
-        }
-
-        .other-input.visible {
-            display: block;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-5px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .other-input input {
-            width: 100%;
-            max-width: 350px;
-            padding: 10px 14px;
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-sm);
-            font-size: 0.9rem;
-            transition: var(--transition);
-            background: var(--white);
-        }
-
-        .other-input input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(196, 30, 58, 0.1);
-        }
-
-        /* Textarea */
-        .textarea-wrapper {
-            margin-top: 4px;
-        }
-
-        .textarea-wrapper textarea {
-            width: 100%;
-            padding: 12px 14px;
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-sm);
-            font-size: 0.9rem;
-            font-family: inherit;
-            resize: vertical;
-            min-height: 90px;
-            transition: var(--transition);
-            background: var(--white);
-        }
-
-        .textarea-wrapper textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(196, 30, 58, 0.1);
-        }
-
-        /* Submit */
-        .submit-section {
-            text-align: center;
-            padding: 30px 20px;
-            background: var(--white);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            margin-bottom: 30px;
-        }
-
-        .submit-btn {
-            background: linear-gradient(135deg, var(--primary), #a01830);
-            color: var(--white);
-            border: none;
-            padding: 14px 40px;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: 0 6px 20px rgba(196, 30, 58, 0.3);
-            letter-spacing: 0.3px;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 28px rgba(196, 30, 58, 0.4);
-        }
-
-        .submit-btn:active {
-            transform: translateY(0);
-        }
-
-        .submit-note {
-            font-size: 0.8rem;
-            color: var(--text-light);
-            margin-top: 12px;
-        }
-
-        /* Results Modal */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            backdrop-filter: blur(4px);
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .modal {
-            background: var(--white);
-            border-radius: var(--radius);
-            padding: 30px;
-            max-width: 600px;
-            width: 100%;
-            max-height: 80vh;
-            overflow-y: auto;
-            box-shadow: var(--shadow-lg);
-            animation: modalIn 0.3s ease;
-        }
-
-        @keyframes modalIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .modal h2 {
-            color: var(--primary-dark);
-            margin-bottom: 16px;
-            text-align: center;
-        }
-
-        .result-item {
-            padding: 10px 14px;
-            background: var(--bg);
-            border-radius: var(--radius-sm);
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-        }
-
-        .result-item strong {
-            color: var(--primary-dark);
-        }
-
-        .close-btn {
-            display: block;
-            margin: 20px auto 0;
-            padding: 10px 30px;
-            background: var(--primary);
-            color: var(--white);
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-
-        .close-btn:hover {
-            background: var(--primary-dark);
-        }
-
-        /* Responsive */
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 600px) {
-            body {
-                padding: 10px;
-            }
-            .header {
-                padding: 24px 16px;
-            }
-            .header h1 {
-                font-size: 1.4rem;
-            }
-            .section {
-                padding: 20px 16px;
-            }
-            .language-selector {
-                gap: 6px;
-            }
-            .lang-btn {
-                padding: 6px 12px;
-                font-size: 0.78rem;
-            }
-            .progress-container {
-                padding: 12px 16px;
-                gap: 10px;
-            }
-        }
-
-        /* Selection counter badge */
-        .counter-badge {
-            display: inline-block;
-            background: var(--primary);
-            color: var(--white);
-            font-size: 0.7rem;
-            padding: 2px 8px;
-            border-radius: 10px;
-            margin-left: 8px;
-            font-weight: 600;
-        }
-
-        .counter-badge.warning {
-            background: #e67e22;
-        }
-
-        .counter-badge.ok {
-            background: var(--success);
+            .page-wrapper { padding: 12px 10px 40px; }
+            .hero { padding: 32px 20px 28px; border-radius: 16px; }
+            .hero h1 { font-size: 1.35rem; }
+            .hero p { font-size: 0.85rem; }
+            .lang-btn { padding: 6px 10px; font-size: 0.75rem; }
+            .card-header { padding: 18px 18px 12px; }
+            .card-body { padding: 16px 18px 20px; }
+            .card-sub { padding-left: 0; margin-top: 4px; }
+            .q-text { font-size: 0.88rem; }
+            .opt { padding: 10px 12px; }
         }
     </style>
 </head>
 <body>
+<div class="page-wrapper">
     <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <div class="header-icon">🐉</div>
-            <h1 id="headerTitle">Chinese Learning Preferences Survey</h1>
-            <p id="headerSubtitle">Thank you for taking the time to help us improve our Chinese courses! This survey will take about 5–7 minutes to complete.</p>
-            <div class="language-selector">
-                <button class="lang-btn active" onclick="switchLanguage('en')">
-                    <span class="lang-flag">🇬🇧</span> English
-                </button>
-                <button class="lang-btn" onclick="switchLanguage('de')">
-                    <span class="lang-flag">🇩🇪</span> Deutsch
-                </button>
-                <button class="lang-btn" onclick="switchLanguage('fr')">
-                    <span class="lang-flag">🇫🇷</span> Français
-                </button>
-                <button class="lang-btn" onclick="switchLanguage('es')">
-                    <span class="lang-flag">🇪🇸</span> Español
-                </button>
+        <!-- HERO -->
+        <div class="hero">
+            <div class="hero-icon">🐉</div>
+            <h1 id="h_title">Chinese Learning Preferences Survey</h1>
+            <p id="h_desc">Thank you for taking the time to help us improve our Chinese courses! This survey takes about 5–7 minutes.</p>
+            <div class="lang-bar">
+                <button class="lang-btn active" onclick="setLang('en')"><span class="lang-flag">🇬🇧</span> English</button>
+                <button class="lang-btn" onclick="setLang('de')"><span class="lang-flag">🇩🇪</span> Deutsch</button>
+                <button class="lang-btn" onclick="setLang('fr')"><span class="lang-flag">🇫🇷</span> Français</button>
+                <button class="lang-btn" onclick="setLang('es')"><span class="lang-flag">🇪🇸</span> Español</button>
             </div>
         </div>
 
-        <!-- Progress -->
-        <div class="progress-container">
-            <div class="progress-bar-wrapper">
-                <div class="progress-bar" id="progressBar"></div>
-            </div>
-            <span class="progress-text" id="progressText">0%</span>
+        <!-- PROGRESS -->
+        <div class="progress-wrap">
+            <div class="progress-track"><div class="progress-fill" id="pFill"></div></div>
+            <span class="progress-pct" id="pPct">0%</span>
         </div>
 
-        <!-- Survey Form -->
-        <form id="surveyForm">
-            <!-- Section 1 -->
-            <div class="section" id="section1">
-                <div class="section-title">
-                    <span class="icon">🎯</span>
-                    <span id="s1Title">Section 1: About Your Chinese Learning Goals</span>
-                </div>
-                <p class="section-subtitle" id="s1Subtitle">Help us understand why you're learning Chinese and what you hope to achieve.</p>
+        <!-- STATUS BANNER -->
+        <div class="status-banner" id="statusBanner">
+            <span id="statusIcon"></span>
+            <span id="statusMsg"></span>
+        </div>
 
-                <div class="question">
-                    <label class="question-label">
-                        <span id="q1Label">What is your primary reason for learning Chinese?</span>
-                        <span class="question-hint" id="q1Hint">(Select up to 3)</span>
-                        <span class="counter-badge" id="counter-q1">0/3</span>
-                    </label>
-                    <div class="options" id="q1Options">
-                        <!-- Dynamically filled -->
+        <!-- FORM -->
+        <form id="surveyForm" action="https://formspree.io/f/mdaqakev" method="POST" onsubmit="return false;">
+            <!-- Hidden fields for Formspree -->
+            <input type="hidden" name="_subject" id="_subject" value="Chinese Learning Preferences Survey Response">
+            <input type="hidden" name="_captcha" value="false">
+
+            <!-- SECTION 1 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-header-inner">
+                        <div class="card-icon red">🎯</div>
+                        <div class="card-title" id="s1t">Section 1: About Your Chinese Learning Goals</div>
                     </div>
+                    <div class="card-sub" id="s1s">Help us understand why you're learning Chinese and what you hope to achieve.</div>
                 </div>
-
-                <div class="question">
-                    <label class="question-label" id="q2Label">What is your current Chinese level?</label>
-                    <div class="options" id="q2Options">
-                        <!-- Dynamically filled -->
+                <div class="card-body">
+                    <div class="q-block">
+                        <div class="q-head">
+                            <span class="q-num">Q1</span>
+                            <span class="q-text" id="q1t">What is your primary reason for learning Chinese?</span>
+                            <span class="q-hint" id="q1h">(Select up to 3)</span>
+                        </div>
+                        <div class="opts" id="q1o"></div>
+                        <div class="other-row" id="q1_other"><input type="text" id="q1_other_in" placeholder="Please specify…"></div>
                     </div>
-                </div>
-
-                <div class="question">
-                    <label class="question-label">
-                        <span id="q3Label">What specific skills do you want to improve the most?</span>
-                        <span class="question-hint" id="q3Hint">(Select up to 3)</span>
-                        <span class="counter-badge" id="counter-q3">0/3</span>
-                    </label>
-                    <div class="options" id="q3Options">
-                        <!-- Dynamically filled -->
+                    <div class="q-block">
+                        <div class="q-head">
+                            <span class="q-num">Q2</span>
+                            <span class="q-text" id="q2t">What is your current Chinese level?</span>
+                        </div>
+                        <div class="opts" id="q2o"></div>
                     </div>
-                </div>
-
-                <div class="question">
-                    <label class="question-label">
-                        <span id="q4Label">What is your biggest challenge when learning Chinese?</span>
-                        <span class="question-hint" id="q4Hint">(Select up to 2)</span>
-                        <span class="counter-badge" id="counter-q4">0/2</span>
-                    </label>
-                    <div class="options" id="q4Options">
-                        <!-- Dynamically filled -->
+                    <div class="q-block">
+                        <div class="q-head">
+                            <span class="q-num">Q3</span>
+                            <span class="q-text" id="q3t">What specific skills do you want to improve the most?</span>
+                            <span class="q-hint" id="q3h">(Select up to 3)</span>
+                        </div>
+                        <div class="opts" id="q3o"></div>
+                        <div class="other-row" id="q3_other"><input type="text" id="q3_other_in" placeholder="Please specify…"></div>
                     </div>
-                </div>
-            </div>
-
-            <!-- Section 2 -->
-            <div class="section" id="section2">
-                <div class="section-title">
-                    <span class="icon">📚</span>
-                    <span id="s2Title">Section 2: Course Content & Topics</span>
-                </div>
-                <p class="section-subtitle" id="s2Subtitle">Help us understand what you want to learn in class.</p>
-
-                <div class="question">
-                    <label class="question-label">
-                        <span id="q5Label">Which topics would you like to focus on in class?</span>
-                        <span class="question-hint" id="q5Hint">(Select up to 5)</span>
-                        <span class="counter-badge" id="counter-q5">0/5</span>
-                    </label>
-                    <div class="options" id="q5Options">
-                        <!-- Dynamically filled -->
-                    </div>
-                </div>
-
-                <div class="question">
-                    <label class="question-label">
-                        <span id="q6Label">Which cultural aspects of China interest you the most?</span>
-                        <span class="question-hint" id="q6Hint">(Select up to 3)</span>
-                        <span class="counter-badge" id="counter-q6">0/3</span>
-                    </label>
-                    <div class="options" id="q6Options">
-                        <!-- Dynamically filled -->
-                    </div>
-                </div>
-
-                <div class="question">
-                    <label class="question-label">
-                        <span id="q7Label">How do you prefer to learn Chinese culture in class?</span>
-                        <span class="question-hint" id="q7Hint">(Select up to 2)</span>
-                        <span class="counter-badge" id="counter-q7">0/2</span>
-                    </label>
-                    <div class="options" id="q7Options">
-                        <!-- Dynamically filled -->
+                    <div class="q-block">
+                        <div class="q-head">
+                            <span class="q-num">Q4</span>
+                            <span class="q-text" id="q4t">What is your biggest challenge when learning Chinese?</span>
+                            <span class="q-hint" id="q4h">(Select up to 2)</span>
+                        </div>
+                        <div class="opts" id="q4o"></div>
+                        <div class="other-row" id="q4_other"><input type="text" id="q4_other_in" placeholder="Please specify…"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Section 3 -->
-            <div class="section" id="section3">
-                <div class="section-title">
-                    <span class="icon">🎓</span>
-                    <span id="s3Title">Section 3: Teaching Methods & Class Style</span>
-                </div>
-                <p class="section-subtitle" id="s3Subtitle">Help us understand how you learn best.</p>
-
-                <div class="question">
-                    <label class="question-label" id="q8Label">How do you prefer the teacher to balance class time?</label>
-                    <div class="options" id="q8Options">
-                        <!-- Dynamically filled -->
+            <!-- SECTION 2 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-header-inner">
+                        <div class="card-icon amber">📚</div>
+                        <div class="card-title" id="s2t">Section 2: Course Content & Topics</div>
                     </div>
+                    <div class="card-sub" id="s2s">Help us understand what you want to learn in class.</div>
                 </div>
-
-                <div class="question">
-                    <label class="question-label">
-                        <span id="q9Label">What types of activities do you find most helpful for learning?</span>
-                        <span class="question-hint" id="q9Hint">(Select up to 3)</span>
-                        <span class="counter-badge" id="counter-q9">0/3</span>
-                    </label>
-                    <div class="options" id="q9Options">
-                        <!-- Dynamically filled -->
+                <div class="card-body">
+                    <div class="q-block">
+                        <div class="q-head">
+                            <span class="q-num">Q5</span>
+                            <span class="q-text" id="q5t">Which topics would you like to focus on in class?</span>
+                            <span class="q-hint" id="q5h">(Select up to 5)</span>
+                        </div>
+                        <div class="opts" id="q5o"></div>
+                        <div class="other-row" id="q5_other"><input type="text" id="q5_other_in" placeholder="Please specify…"></div>
                     </div>
-                </div>
-
-                <div class="question">
-                    <label class="question-label">
-                        <span id="q10Label">How do you prefer to practice speaking in class?</span>
-                        <span class="question-hint" id="q10Hint">(Select up to 2)</span>
-                        <span class="counter-badge" id="counter-q10">0/2</span>
-                    </label>
-                    <div class="options" id="q10Options">
-                        <!-- Dynamically filled -->
+                    <div class="q-block">
+                        <div class="q-head">
+                            <span class="q-num">Q6</span>
+                            <span class="q-text" id="q6t">Which cultural aspects of China interest you the most?</span>
+                            <span class="q-hint" id="q6h">(Select up to 3)</span>
+                        </div>
+                        <div class="opts" id="q6o"></div>
+                        <div class="other-row" id="q6_other"><input type="text" id="q6_other_in" placeholder="Please specify…"></div>
                     </div>
-                </div>
-
-                <div class="question">
-                    <label class="question-label" id="q11Label">How do you like to receive corrections?</label>
-                    <div class="options" id="q11Options">
-                        <!-- Dynamically filled -->
-                    </div>
-                </div>
-
-                <div class="question">
-                    <label class="question-label">
-                        <span id="q12Label">What tools or resources would you like to use in class?</span>
-                        <span class="question-hint" id="q12Hint">(Select up to 3)</span>
-                        <span class="counter-badge" id="counter-q12">0/3</span>
-                    </label>
-                    <div class="options" id="q12Options">
-                        <!-- Dynamically filled -->
+                    <div class="q-block">
+                        <div class="q-head">
+                            <span class="q-num">Q7</span>
+                            <span class="q-text" id="q7t">How do you prefer to learn Chinese culture in class?</span>
+                            <span class="q-hint" id="q7h">(Select up to 2)</span>
+                        </div>
+                        <div class="opts" id="q7o"></div>
+                        <div class="other-row" id="q7_other"><input type="text" id="q7_other_in" placeholder="Please specify…"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Section 4 -->
-            <div class="section" id="section4">
-                <div class="section-title">
-                    <span class="icon">📝</span>
-                    <span id="s4Title">Section 4: Homework & Practice</span>
+            <!-- SECTION 3 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-header-inner">
+                        <div class="card-icon blue">🎓</div>
+                        <div class="card-title" id="s3t">Section 3: Teaching Methods & Class Style</div>
+                    </div>
+                    <div class="card-sub" id="s3s">Help us understand how you learn best.</div>
                 </div>
-                <p class="section-subtitle" id="s4Subtitle">Help us assign the right kind of practice for you.</p>
-
-                <div class="question">
-                    <label class="question-label">
-                        <span id="q13Label">What type of homework would you prefer?</span>
-                        <span class="question-hint" id="q13Hint">(Select up to 2)</span>
-                        <span class="counter-badge" id="counter-q13">0/2</span>
-                    </label>
-                    <div class="options" id="q13Options">
-                        <!-- Dynamically filled -->
+                <div class="card-body">
+                    <div class="q-block">
+                        <div class="q-head">
+                            <span class="q-num">Q8</span>
+                            <span class="q-text" id="q8t">How do you prefer the teacher to balance class time?</span>
+                        </div>
+                        <div class="opts" id="q8o"></div>
+                    </div>
+                    <div class="q-block">
+                        <div class="q-head">
+                            <span class="q-num">Q9</span>
+                            <span class="q-text" id="q9t">What types of activities do you find most helpful?</span>
+                            <span class="q-hint" id="q9h">(Select up to 3)</span>
+                        </div>
+                        <div class="opts" id="q9o"></div>
+                        <div class="other-row" id="q9_other"><input type="text" id="q9_other_in" placeholder="Please specify…"></div>
+                    </div>
+                    <div class="q-block">
+                        <div class="q-head">
+                            <span class="q-num">Q10</span>
+                            <span class="q-text" id="q10t">How do you prefer to practice speaking in class?</span>
+                            <span class="q-hint" id="q10h">(Select up to 2)</span>
+                        </div>
+                        <div class="opts" id="q10o"></div>
+                        <div class="other-row" id="q10_other"><input type="text" id="q10_other_in" placeholder="Please specify…"></div>
+                    </div>
+                    <div class="q-block">
+                        <div class="q-head">
+                            <span class="q-num">Q11</span>
+                            <span class="q-text" id="q11t">How do you like to receive corrections?</span>
+                        </div>
+                        <div class="opts" id="q11o"></div>
+                    </div>
+                    <div class="q-block">
+                        <div class="q-head">
+                            <span class="q-num">Q12</span>
+                            <span class="q-text" id="q12t">What tools or resources would you like to use in class?</span>
+                            <span class="q-hint" id="q12h">(Select up to 3)</span>
+                        </div>
+                        <div class="opts" id="q12o"></div>
+                        <div class="other-row" id="q12_other"><input type="text" id="q12_other_in" placeholder="Please specify…"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Section 5 -->
-            <div class="section" id="section5">
-                <div class="section-title">
-                    <span class="icon">🎉</span>
-                    <span id="s5Title">Section 5: Motivation & Fun in Learning</span>
-                </div>
-                <p class="section-subtitle" id="s5Subtitle">Help us make classes engaging and enjoyable!</p>
-
-                <div class="question">
-                    <label class="question-label">
-                        <span id="q14Label">What makes you feel most motivated to learn Chinese?</span>
-                        <span class="question-hint" id="q14Hint">(Select up to 2)</span>
-                        <span class="counter-badge" id="counter-q14">0/2</span>
-                    </label>
-                    <div class="options" id="q14Options">
-                        <!-- Dynamically filled -->
+            <!-- SECTION 4 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-header-inner">
+                        <div class="card-icon green">📝</div>
+                        <div class="card-title" id="s4t">Section 4: Homework & Practice</div>
                     </div>
+                    <div class="card-sub" id="s4s">Help us assign the right kind of practice for you.</div>
                 </div>
-
-                <div class="question">
-                    <label class="question-label" id="q15Label">What would make Chinese classes more fun for you?</label>
-                    <div class="textarea-wrapper">
-                        <textarea id="q15Textarea" placeholder="Share your ideas..."></textarea>
-                    </div>
-                </div>
-
-                <div class="question">
-                    <label class="question-label" id="q16Label">Is there anything you wish your previous Chinese teachers had done differently?</label>
-                    <div class="textarea-wrapper">
-                        <textarea id="q16Textarea" placeholder="Share your thoughts..."></textarea>
+                <div class="card-body">
+                    <div class="q-block">
+                        <div class="q-head">
+                            <span class="q-num">Q13</span>
+                            <span class="q-text" id="q13t">What type of homework would you prefer?</span>
+                            <span class="q-hint" id="q13h">(Select up to 2)</span>
+                        </div>
+                        <div class="opts" id="q13o"></div>
+                        <div class="other-row" id="q13_other"><input type="text" id="q13_other_in" placeholder="Please specify…"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Section 6 -->
-            <div class="section" id="section6">
-                <div class="section-title">
-                    <span class="icon">💬</span>
-                    <span id="s6Title">Section 6: Additional Feedback</span>
-                </div>
-                <p class="section-subtitle" id="s6Subtitle">Any other thoughts or suggestions?</p>
-
-                <div class="question">
-                    <label class="question-label" id="q17Label">Do you have any other suggestions for our Chinese courses?</label>
-                    <div class="textarea-wrapper">
-                        <textarea id="q17Textarea" placeholder="Share your suggestions..."></textarea>
+            <!-- SECTION 5 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-header-inner">
+                        <div class="card-icon purple">🎉</div>
+                        <div class="card-title" id="s5t">Section 5: Motivation & Fun in Learning</div>
                     </div>
+                    <div class="card-sub" id="s5s">Help us make classes engaging and enjoyable!</div>
                 </div>
-
-                <div class="question">
-                    <label class="question-label" id="q18Label">Would you be interested in joining a free trial class to experience our teaching style?</label>
-                    <div class="options" id="q18Options">
-                        <!-- Dynamically filled -->
+                <div class="card-body">
+                    <div class="q-block">
+                        <div class="q-head">
+                            <span class="q-num">Q14</span>
+                            <span class="q-text" id="q14t">What makes you feel most motivated to learn Chinese?</span>
+                            <span class="q-hint" id="q14h">(Select up to 2)</span>
+                        </div>
+                        <div class="opts" id="q14o"></div>
+                        <div class="other-row" id="q14_other"><input type="text" id="q14_other_in" placeholder="Please specify…"></div>
+                    </div>
+                    <div class="q-block">
+                        <div class="q-head">
+                            <span class="q-num">Q15</span>
+                            <span class="q-text" id="q15t">What would make Chinese classes more fun for you?</span>
+                        </div>
+                        <div class="ta-box"><textarea id="q15ta" placeholder="Share your ideas..."></textarea></div>
+                    </div>
+                    <div class="q-block">
+                        <div class="q-head">
+                            <span class="q-num">Q16</span>
+                            <span class="q-text" id="q16t">Is there anything you wish your previous Chinese teachers had done differently?</span>
+                        </div>
+                        <div class="ta-box"><textarea id="q16ta" placeholder="Share your thoughts..."></textarea></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Submit -->
-            <div class="submit-section">
-                <button type="button" class="submit-btn" id="submitBtn" onclick="submitSurvey()">
-                    📤 Submit Survey
+            <!-- SECTION 6 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-header-inner">
+                        <div class="card-icon teal">💬</div>
+                        <div class="card-title" id="s6t">Section 6: Additional Feedback</div>
+                    </div>
+                    <div class="card-sub" id="s6s">Any other thoughts or suggestions?</div>
+                </div>
+                <div class="card-body">
+                    <div class="q-block">
+                        <div class="q-head">
+                            <span class="q-num">Q17</span>
+                            <span class="q-text" id="q17t">Do you have any other suggestions for our Chinese courses?</span>
+                        </div>
+                        <div class="ta-box"><textarea id="q17ta" placeholder="Share your suggestions..."></textarea></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUBMIT -->
+            <div class="submit-area">
+                <button type="button" class="btn-submit" id="submitBtn" onclick="submitForm()">
+                    <span class="spinner"></span>
+                    <span class="btn-icon">📤</span>
+                    <span id="btnTxt">Submit Survey</span>
                 </button>
-                <p class="submit-note" id="submitNote">We appreciate your time and feedback!</p>
+                <p class="submit-sub" id="btnSub">We appreciate your time and feedback!</p>
             </div>
         </form>
     </div>
+</div>
 
-    <!-- Results Modal -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal">
-            <h2 id="modalTitle">📊 Survey Results</h2>
-            <div id="resultsContent"></div>
-            <button class="close-btn" id="closeBtn" onclick="closeModal()">Close</button>
-        </div>
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
+    <div class="modal-box">
+        <h2 id="mTitle">📊 Your Responses</h2>
+        <div id="mBody"></div>
+        <button class="modal-close" onclick="closeModal()" id="mClose">Close</button>
     </div>
+</div>
 
-    <script>
-        // ==================== LANGUAGE PACKAGES ====================
-        const translations = {
-            en: {
-                headerTitle: 'Chinese Learning Preferences Survey',
-                headerSubtitle: 'Thank you for taking the time to help us improve our Chinese courses! This survey will take about 5–7 minutes to complete.',
-                progress: 'Progress',
-                s1Title: 'Section 1: About Your Chinese Learning Goals',
-                s1Subtitle: 'Help us understand why you\'re learning Chinese and what you hope to achieve.',
-                q1Label: 'What is your primary reason for learning Chinese?',
-                q1Hint: '(Select up to 3)',
-                q1Options: ['Work/business', 'Travel in China', 'Personal interest/culture',
-                'Connecting with Chinese friends/family', 'Academic studies (e.g., university course)', 'Other'],
-                q2Label: 'What is your current Chinese level?',
-                q2Options: ['Absolute beginner (no prior knowledge)', 'Beginner (can say simple phrases like greetings)',
-                'Elementary (can hold basic conversations)', 'Intermediate (can discuss daily topics)', 'Advanced (can discuss complex topics)'],
-                q3Label: 'What specific skills do you want to improve the most?',
-                q3Hint: '(Select up to 3)',
-                q3Options: ['Speaking (fluency & pronunciation)', 'Listening (understanding native speakers)',
-                'Reading (characters & vocabulary)', 'Writing (grammar & sentence structure)', 'HSK/Exam preparation', 'Other'],
-                q4Label: 'What is your biggest challenge when learning Chinese?',
-                q4Hint: '(Select up to 2)',
-                q4Options: ['Pronunciation (tones, pinyin)', 'Chinese characters (reading/writing)',
-                'Grammar (sentence structure)', 'Lack of practice opportunities', 'Remembering vocabulary', 'Other'],
-                s2Title: 'Section 2: Course Content & Topics',
-                s2Subtitle: 'Help us understand what you want to learn in class.',
-                q5Label: 'Which topics would you like to focus on in class?',
-                q5Hint: '(Select up to 5)',
-                q5Options: ['Greetings & introductions', 'Shopping & bargaining', 'Ordering food & dining out',
-                'Directions & transportation', 'Hobbies & free time', 'Weather & seasons', 'Travel & tourism',
-                'Work & business', 'Chinese culture (festivals, traditions)', 'Pop culture (movies, music, TV shows)', 'Other'],
-                q6Label: 'Which cultural aspects of China interest you the most?',
-                q6Hint: '(Select up to 3)',
-                q6Options: ['Food & cuisine', 'History & dynasties', 'Festivals (Spring Festival, Mid-Autumn Festival)',
-                'Traditional arts (calligraphy, tea ceremony)', 'Modern China (technology, trends)',
-                'Regional differences (Beijing vs. Shanghai vs. Guangzhou)', 'Other'],
-                q7Label: 'How do you prefer to learn Chinese culture in class?',
-                q7Hint: '(Select up to 2)',
-                q7Options: ['Short videos (e.g., documentaries, vlogs)', 'Stories & anecdotes',
-                'Role-playing (e.g., acting out a tea ceremony)', 'Hands-on activities (e.g., writing calligraphy)',
-                'Comparisons with my own culture', 'Other'],
-                s3Title: 'Section 3: Teaching Methods & Class Style',
-                s3Subtitle: 'Help us understand how you learn best.',
-                q8Label: 'How do you prefer the teacher to balance class time?',
-                q8Options: ['More teacher explanation, less student practice', 'Balanced (50% teacher talk, 50% student practice)',
-                'More student practice, less teacher talk', 'Mostly student-led (e.g., discussions, debates)'],
-                q9Label: 'What types of activities do you find most helpful for learning?',
-                q9Hint: '(Select up to 3)',
-                q9Options: ['Repetition & drills (e.g., repeating after the teacher)',
-                'Role-playing (e.g., simulating real-life conversations)', 'Games (e.g., word matching, charades)',
-                'Listening exercises (e.g., podcasts, dialogues)', 'Writing tasks (e.g., short essays, messages)',
-                'Group discussions', 'Other'],
-                q10Label: 'How do you prefer to practice speaking in class?',
-                q10Hint: '(Select up to 2)',
-                q10Options: ['One-on-one with the teacher', 'Small group discussions (2–4 students)',
-                'Whole-class discussions', 'Recording myself & getting feedback', 'Other'],
-                q11Label: 'How do you like to receive corrections?',
-                q11Options: ['Immediate correction (teacher stops me to fix mistakes)',
-                'Delayed correction (teacher notes mistakes and reviews them later)',
-                'Encouragement-focused (teacher praises correct usage more than correcting errors)',
-                'Peer correction (other students help correct me)'],
-                q12Label: 'What tools or resources would you like to use in class?',
-                q12Hint: '(Select up to 3)',
-                q12Options: ['Flashcards (digital or physical)', 'Interactive whiteboard (e.g., for writing characters)',
-                'Videos (e.g., short clips, movies)', 'Games (e.g., Kahoot, Quizlet)',
-                'AI tools (e.g., pronunciation feedback)', 'Textbooks/workbooks', 'Other'],
-                s4Title: 'Section 4: Homework & Practice',
-                s4Subtitle: 'Help us assign the right kind of practice for you.',
-                q13Label: 'What type of homework would you prefer?',
-                q13Hint: '(Select up to 2)',
-                q13Options: ['Reviewing class materials (PPT, notes)', 'Listening exercises (e.g., podcasts, dialogues)',
-                'Speaking practice (e.g., recording voice messages)', 'Writing tasks (e.g., short essays, journal entries)',
-                'Vocabulary/grammar drills', 'No homework', 'Other'],
-                s5Title: 'Section 5: Motivation & Fun in Learning',
-                s5Subtitle: 'Help us make classes engaging and enjoyable!',
-                q14Label: 'What makes you feel most motivated to learn Chinese?',
-                q14Hint: '(Select up to 2)',
-                q14Options: ['Learning a useful phrase I can use right away', 'Understanding a Chinese joke or meme',
-                'Completing a conversation task successfully', 'Receiving positive feedback from the teacher', 'Other'],
-                q15Label: 'What would make Chinese classes more fun for you?',
-                q15Placeholder: 'Share your ideas...',
-                q16Label: 'Is there anything you wish your previous Chinese teachers had done differently?',
-                q16Placeholder: 'Share your thoughts...',
-                s6Title: 'Section 6: Additional Feedback',
-                s6Subtitle: 'Any other thoughts or suggestions?',
-                q17Label: 'Do you have any other suggestions for our Chinese courses?',
-                q17Placeholder: 'Share your suggestions...',
-                q18Label: 'Would you be interested in joining a free trial class to experience our teaching style?',
-                q18Options: ['Yes, I\'d love to!', 'Maybe, please contact me later.', 'No, thank you.'],
-                submitBtn: '📤 Submit Survey',
-                submitNote: 'We appreciate your time and feedback!',
-                modalTitle: '📊 Survey Results',
-                closeBtn: 'Close',
-                otherPlaceholder: 'Please specify...',
-                thankYou: 'Thank you for completing the survey!',
-                selectMore: 'You can select up to',
-                selections: 'more',
-                selection: 'more',
-            },
-            de: {
-                headerTitle: 'Umfrage zu chinesischen Lernpräferenzen',
-                headerSubtitle: 'Vielen Dank, dass Sie sich die Zeit nehmen, unsere chinesischen Kurse zu verbessern! Diese Umfrage dauert etwa 5–7 Minuten.',
-                progress: 'Fortschritt',
-                s1Title: 'Abschnitt 1: Ihre chinesischen Lernziele',
-                s1Subtitle: 'Helfen Sie uns zu verstehen, warum Sie Chinesisch lernen und was Sie erreichen möchten.',
-                q1Label: 'Was ist Ihr Hauptgrund, Chinesisch zu lernen?',
-                q1Hint: '(Bis zu 3 auswählen)',
-                q1Options: ['Arbeit/Wirtschaft', 'Reisen in China', 'Persönliches Interesse/Kultur',
-                'Kontakt zu chinesischen Freunden/Familie', 'Studium (z.B. Universitätskurs)', 'Sonstiges'],
-                q2Label: 'Was ist Ihr aktuelles Chinesisch-Niveau?',
-                q2Options: ['Absolute Anfänger (keine Vorkenntnisse)', 'Anfänger (kann einfache Sätze wie Begrüßungen sagen)',
-                'Grundstufe (kann einfache Gespräche führen)', 'Mittelstufe (kann alltägliche Themen besprechen)',
-                'Fortgeschritten (kann komplexe Themen besprechen)'],
-                q3Label: 'Welche Fähigkeiten möchten Sie am meisten verbessern?',
-                q3Hint: '(Bis zu 3 auswählen)',
-                q3Options: ['Sprechen (Fluss & Aussprache)', 'Hören (Muttersprachler verstehen)',
-                'Lesen (Zeichen & Wortschatz)', 'Schreiben (Grammatik & Satzbau)', 'HSK/Prüfungsvorbereitung', 'Sonstiges'],
-                q4Label: 'Was ist Ihre größte Herausforderung beim Chinesischlernen?',
-                q4Hint: '(Bis zu 2 auswählen)',
-                q4Options: ['Aussprache (Töne, Pinyin)', 'Chinesische Zeichen (Lesen/Schreiben)',
-                'Grammatik (Satzbau)', 'Mangelnde Übungsmöglichkeiten', 'Vokabeln merken', 'Sonstiges'],
-                s2Title: 'Abschnitt 2: Kursinhalte & Themen',
-                s2Subtitle: 'Helfen Sie uns zu verstehen, was Sie im Kurs lernen möchten.',
-                q5Label: 'Welche Themen möchten Sie im Kurs behandeln?',
-                q5Hint: '(Bis zu 5 auswählen)',
-                q5Options: ['Begrüßungen & Vorstellungen', 'Einkaufen & Feilschen', 'Essen bestellen & ausgehen',
-                'Wegbeschreibung & Transport', 'Hobbys & Freizeit', 'Wetter & Jahreszeiten', 'Reisen & Tourismus',
-                'Arbeit & Wirtschaft', 'Chinesische Kultur (Feste, Traditionen)', 'Popkultur (Filme, Musik, TV)', 'Sonstiges'],
-                q6Label: 'Welche kulturellen Aspekte Chinas interessieren Sie am meisten?',
-                q6Hint: '(Bis zu 3 auswählen)',
-                q6Options: ['Essen & Küche', 'Geschichte & Dynastien', 'Feste (Frühlingsfest, Herbstfest)',
-                'Traditionelle Kunst (Kalligraphee, Teezeremonie)', 'Modernes China (Technologie, Trends)',
-                'Regionale Unterschiede (Peking vs. Shanghai vs. Guangzhou)', 'Sonstiges'],
-                q7Label: 'Wie lernen Sie chinesische Kultur im Kurs am liebsten?',
-                q7Hint: '(Bis zu 2 auswählen)',
-                q7Options: ['Kurze Videos (z.B. Dokus, Vlogs)', 'Geschichten & Anekdoten',
-                'Rollenspiele (z.B. Teezeremonie spielen)', 'Praktische Aktivitäten (z.B. Kalligrafie schreiben)',
-                'Vergleiche mit meiner eigenen Kultur', 'Sonstiges'],
-                s3Title: 'Abschnitt 3: Lehrmethoden & Kursstil',
-                s3Subtitle: 'Helfen Sie uns zu verstehen, wie Sie am besten lernen.',
-                q8Label: 'Wie soll der Lehrer die Kurszeit am liebsten aufteilen?',
-                q8Options: ['Mehr Erklärung, weniger Übung', 'Ausgewogen (50% Lehrer, 50% Übung)',
-                'Mehr Übung, weniger Erklärung', 'Meist schülergeführt (z.B. Diskussionen, Debatten)'],
-                q9Label: 'Welche Aktivitäten helfen Ihnen beim Lernen am meisten?',
-                q9Hint: '(Bis zu 3 auswählen)',
-                q9Options: ['Wiederholung & Übungen (z.B. Nachsprechen)', 'Rollenspiele (z.B. Alltagssimulationen)',
-                'Spiele (z.B. Wortspiele, Ratespiele)', 'Hörübungen (z.B. Podcasts, Dialoge)',
-                'Schreibaufgaben (z.B. kurze Texte, Nachrichten)', 'Gruppendiskussionen', 'Sonstiges'],
-                q10Label: 'Wie üben Sie im Kurs am liebsten das Sprechen?',
-                q10Hint: '(Bis zu 2 auswählen)',
-                q10Options: ['Eins-zu-eins mit dem Lehrer', 'Kleingruppen (2–4 Schüler)',
-                'Gesamtklassengespräche', 'Selbst aufnehmen & Feedback erhalten', 'Sonstiges'],
-                q11Label: 'Wie möchten Sie Korrekturen erhalten?',
-                q11Options: ['Sofortige Korrektur (Lehrer stoppt mich)',
-                'Verzögerte Korrektur (Lehrer notiert Fehler und bespricht sie später)',
-                'Ermutigungsorientiert (Lehrer lobt mehr als korrigiert)',
-                'Korrektur durch Mitschüler'],
-                q12Label: 'Welche Tools/Ressourcen möchten Sie im Kurs verwenden?',
-                q12Hint: '(Bis zu 3 auswählen)',
-                q12Options: ['Kartenkästen (digital oder physisch)', 'Interaktive Tafel (z.B. zum Zeichnen von Zeichen)',
-                'Videos (z.B. kurze Clips, Filme)', 'Spiele (z.B. Kahoot, Quizlet)',
-                'KI-Tools (z.B. Aussprache-Feedback)', 'Lehrbücher/Arbeitshefte', 'Sonstiges'],
-                s4Title: 'Abschnitt 4: Hausaufgaben & Übung',
-                s4Subtitle: 'Helfen Sie uns, die richtige Übungsart für Sie zu finden.',
-                q13Label: 'Welche Art von Hausaufgaben bevorzugen Sie?',
-                q13Hint: '(Bis zu 2 auswählen)',
-                q13Options: ['Kursmaterial durchgehen (PPT, Notizen)', 'Hörübungen (z.B. Podcasts, Dialoge)',
-                'Sprechübungen (z.B. Sprachnachrichten aufnehmen)', 'Schreibaufgaben (z.B. kurze Texte, Tagebuch)',
-                'Vokabel-/Grammatikübungen', 'Keine Hausaufgaben', 'Sonstiges'],
-                s5Title: 'Abschnitt 5: Motivation & Spaß beim Lernen',
-                s5Subtitle: 'Helfen Sie uns, den Kurs unterhaltsam zu gestalten!',
-                q14Label: 'Was motiviert Sie am meisten, Chinesisch zu lernen?',
-                q14Hint: '(Bis zu 2 auswählen)',
-                q14Options: ['Einen nützlichen Satz zu lernen, den ich sofort verwenden kann',
-                'Einen chinesischen Witz oder Meme zu verstehen',
-                'Eine Gesprächsaufgabe erfolgreich abzuschließen', 'Positives Feedback vom Lehrer zu erhalten', 'Sonstiges'],
-                q15Label: 'Was würde den Chinesischkurs für Sie unterhaltsamer machen?',
-                q15Placeholder: 'Teilen Sie Ihre Ideen...',
-                q16Label: 'Gibt es etwas, das Ihre früheren Chinesischlehrer anders gemacht hätten sollen?',
-                q16Placeholder: 'Teilen Sie Ihre Gedanken...',
-                s6Title: 'Abschnitt 6: Zusätzliches Feedback',
-                s6Subtitle: 'Weitere Gedanken oder Vorschläge?',
-                q17Label: 'Haben Sie weitere Vorschläge für unsere Chinesischkurse?',
-                q17Placeholder: 'Teilen Sie Ihre Vorschläge...',
-                q18Label: 'Wären Sie daran interessiert, an einem kostenlosen Probel teilzunehmen?',
-                q18Options: ['Ja, ich würde gerne!', 'Vielleicht, bitte kontaktieren Sie mich später.', 'Nein, danke.'],
-                submitBtn: '📤 Umfrage absenden',
-                submitNote: 'Wir schätzen Ihre Zeit und Ihr Feedback!',
-                modalTitle: '📊 Umfrageergebnisse',
-                closeBtn: 'Schließen',
-                otherPlaceholder: 'Bitte angeben...',
-                thankYou: 'Vielen Dank für die Teilnahme an der Umfrage!',
-                selectMore: 'Sie können bis zu',
-                selections: 'weitere auswählen',
-                selection: 'weitere auswählen',
-            },
-            fr: {
-                headerTitle: 'Enquête sur les préférences d\'apprentissage du chinois',
-                headerSubtitle: 'Merci de prendre le temps de nous aider à améliorer nos cours de chinois! Cette enquête prendra environ 5 à 7 minutes.',
-                progress: 'Progrès',
-                s1Title: 'Section 1: Vos objectifs d\'apprentissage du chinois',
-                s1Subtitle: 'Aidez-nous à comprendre pourquoi vous apprenez le chinois et ce que vous espérez accomplir.',
-                q1Label: 'Quelle est votre raison principale d\'apprendre le chinois?',
-                q1Hint: '(Sélectionnez jusqu\'à 3)',
-                q1Options: ['Travail/affaires', 'Voyage en Chine', 'Intérêt personnel/culture',
-                'Connexion avec des amis/famille chinois', 'Études universitaires (ex: cours à l\'université)', 'Autre'],
-                q2Label: 'Quel est votre niveau actuel de chinois?',
-                q2Options: ['Débutant absolu (aucune connaissance préalable)',
-                'Débutant (peut dire des phrases simples comme les saluts)',
-                'Élémentaire (peut tenir des conversations de base)',
-                'Intermédiaire (peut discuter de sujets quotidiens)',
-                'Avancé (peut discuter de sujets complexes)'],
-                q3Label: 'Quelles compétences souhaitez-vous le plus améliorer?',
-                q3Hint: '(Sélectionnez jusqu\'à 3)',
-                q3Options: ['Parler (fluidité et prononciation)', 'Écouter (comprendre les locuteurs natifs)',
-                'Lire (caractères et vocabulaire)', 'Écrire (grammaire et structure de phrase)',
-                'Préparation HSK/examen', 'Autre'],
-                q4Label: 'Quel est votre plus grand défi pour apprendre le chinois?',
-                q4Hint: '(Sélectionnez jusqu\'à 2)',
-                q4Options: ['Prononciation (tons, pinyin)', 'Caractères chinois (lecture/écriture)',
-                'Grammaire (structure de phrase)', 'Manque de possibilités de pratique',
-                'Mémoriser le vocabulaire', 'Autre'],
-                s2Title: 'Section 2: Contenu et sujets du cours',
-                s2Subtitle: 'Aidez-nous à comprendre ce que vous voulez apprendre en classe.',
-                q5Label: 'Quels sujets souhaitez-vous aborder en classe?',
-                q5Hint: '(Sélectionnez jusqu\'à 5)',
-                q5Options: ['Salutations et présentations', 'Achats et marchandage',
-                'Commander de la nourriture et dîner', 'Directions et transport',
-                'Loisirs et temps libre', 'Météo et saisons', 'Voyage et tourisme',
-                'Travail et affaires', 'Culture chinoise (fêtes, traditions)',
-                'Culture pop (films, musique, émissions TV)', 'Autre'],
-                q6Label: 'Quels aspects culturels de la Chine vous intéressent le plus?',
-                q6Hint: '(Sélectionnez jusqu\'à 3)',
-                q6Options: ['Nourriture et cuisine', 'Histoire et dynasties',
-                'Fêtes (Fête du Printemps, Fête de la Lune)',
-                'Arts traditionnels (calligraphie, cérémonie du thé)',
-                'Chine moderne (technologie, tendances)',
-                'Différences régionales (Pékin vs Shanghai vs Canton)', 'Autre'],
-                q7Label: 'Comment préférez-vous apprendre la culture chinoise en classe?',
-                q7Hint: '(Sélectionnez jusqu\'à 2)',
-                q7Options: ['Courtes vidéos (ex: documentaires, vlogs)',
-                'Histoires et anecdotes', 'Jeux de rôle (ex: simuler une cérémonie du thé)',
-                'Activités pratiques (ex: écrire de la calligraphie)',
-                'Comparaisons avec ma propre culture', 'Autre'],
-                s3Title: 'Section 3: Méthodes d\'enseignement et style de classe',
-                s3Subtitle: 'Aidez-nous à comprendre comment vous apprenez le mieux.',
-                q8Label: 'Comment préférez-vous que l\'enseignant équilibre le temps de classe?',
-                q8Options: ['Plus d\'explication, moins de pratique',
-                'Équilibré (50% enseignant, 50% pratique)',
-                'Plus de pratique, moins d\'explication',
-                'Principalement dirigé par les étudiants (ex: discussions, débats)'],
-                q9Label: 'Quels types d\'activités trouvez-vous les plus utiles pour apprendre?',
-                q9Hint: '(Sélectionnez jusqu\'à 3)',
-                q9Options: ['Répétition et exercices (ex: répéter après l\'enseignant)',
-                'Jeux de rôle (ex: simuler des conversations réelles)',
-                'Jeux (ex: association de mots, charades)',
-                'Exercices d\'écoute (ex: podcasts, dialogues)',
-                'Tâches d\'écriture (ex: courts essais, messages)',
-                'Discussions de groupe', 'Autre'],
-                q10Label: 'Comment préférez-vous pratiquer la parole en classe?',
-                q10Hint: '(Sélectionnez jusqu\'à 2)',
-                q10Options: ['En tête-à-tête avec l\'enseignant',
-                'Discussions en petits groupes (2–4 étudiants)',
-                'Discussions avec toute la classe',
-                'S\'enregistrer et obtenir des commentaires', 'Autre'],
-                q11Label: 'Comment aimez-vous recevoir des corrections?',
-                q11Options: ['Correction immédiate (l\'enseignant m\'arrête pour corriger)',
-                'Correction différée (l\'enseignant note les erreurs et les révise plus tard)',
-                'Axé sur l\'encouragement (l\'enseignant félicite plus qu\'il ne corrige)',
-                'Correction par les pairs (les autres étudiants m\'aident à corriger)'],
-                q12Label: 'Quels outils ou ressources souhaitez-vous utiliser en classe?',
-                q12Hint: '(Sélectionnez jusqu\'à 3)',
-                q12Options: ['Cartes mémoire (numériques ou physiques)',
-                'Tableau blanc interactif (ex: pour écrire des caractères)',
-                'Vidéos (ex: courts clips, films)',
-                'Jeux (ex: Kahoot, Quizlet)',
-                'Outils IA (ex: commentaires sur la prononciation)',
-                'Manuels/cahiers d\'exercices', 'Autre'],
-                s4Title: 'Section 4: Devoirs et pratique',
-                s4Subtitle: 'Aidez-nous à vous attribuer le bon type de pratique.',
-                q13Label: 'Quel type de devoirs préférez-vous?',
-                q13Hint: '(Sélectionnez jusqu\'à 2)',
-                q13Options: ['Réviser le matériel de cours (PPT, notes)',
-                'Exercices d\'écoute (ex: podcasts, dialogues)',
-                'Pratique de la parole (ex: enregistrer des messages vocaux)',
-                'Tâches d\'écriture (ex: courts essais, journal)',
-                'Exercices de vocabulaire/grammaire', 'Pas de devoirs', 'Autre'],
-                s5Title: 'Section 5: Motivation et plaisir d\'apprendre',
-                s5Subtitle: 'Aidez-nous à rendre les cours engageants et agréables!',
-                q14Label: 'Qu\'est-ce qui vous motive le plus à apprendre le chinois?',
-                q14Hint: '(Sélectionnez jusqu\'à 2)',
-                q14Options: ['Apprendre une phrase utile que je peux utiliser immédiatement',
-                'Comprendre une blague ou un mème chinois',
-                'Réussir une tâche de conversation',
-                'Recevoir des commentaires positifs de l\'enseignant', 'Autre'],
-                q15Label: 'Qu\'est-ce qui rendrait les cours de chinois plus amusants pour vous?',
-                q15Placeholder: 'Partagez vos idées...',
-                q16Label: 'Y a-t-il quelque chose que vous souhaiteriez que vos anciens professeurs de chinois aient fait différemment?',
-                q16Placeholder: 'Partagez vos pensées...',
-                s6Title: 'Section 6: Commentaires supplémentaires',
-                s6Subtitle: 'D\'autres pensées ou suggestions?',
-                q17Label: 'Avez-vous d\'autres suggestions pour nos cours de chinois?',
-                q17Placeholder: 'Partagez vos suggestions...',
-                q18Label: 'Souhaiteriez-vous participer à un cours d\'essai gratuit pour découvrir notre style d\'enseignement?',
-                q18Options: ['Oui, j\'adorerais!', 'Peut-être, veuillez me contacter plus tard.', 'Non, merci.'],
-                submitBtn: '📤 Soumettre l\'enquête',
-                submitNote: 'Nous apprécions votre temps et vos commentaires!',
-                modalTitle: '📊 Résultats de l\'enquête',
-                closeBtn: 'Fermer',
-                otherPlaceholder: 'Veuillez préciser...',
-                thankYou: 'Merci d\'avoir répondu à l\'enquête!',
-                selectMore: 'Vous pouvez sélectionner jusqu\'à',
-                selections: 'de plus',
-                selection: 'de plus',
-            },
-            es: {
-                headerTitle: 'Encuesta de preferencias de aprendizaje de chino',
-                headerSubtitle: '¡Gracias por tomarse el tiempo para ayudarnos a mejorar nuestros cursos de chino! Esta encuesta tomará unos 5–7 minutos.',
-                progress: 'Progreso',
-                s1Title: 'Sección 1: Sus objetivos de aprendizaje del chino',
-                s1Subtitle: 'Ayúdenos a entender por qué está aprendiendo chino y qué espera lograr.',
-                q1Label: '¿Cuál es su razón principal para aprender chino?',
-                q1Hint: '(Seleccione hasta 3)',
-                q1Options: ['Trabajo/negocios', 'Viajar a China', 'Interés personal/cultura',
-                'Conectar con amigos/familiares chinos', 'Estudios académicos (ej: curso universitario)', 'Otro'],
-                q2Label: '¿Cuál es su nivel actual de chino?',
-                q2Options: ['Principiante absoluto (sin conocimientos previos)',
-                'Principiante (puede decir frases simples como saludos)',
-                'Básico (puede mantener conversaciones sencillas)',
-                'Intermedio (puede discutir temas cotidianos)',
-                'Avanzado (puede discutir temas complejos)'],
-                q3Label: '¿Qué habilidades quiere mejorar más?',
-                q3Hint: '(Seleccione hasta 3)',
-                q3Options: ['Hablar (fluidez y pronunciación)', 'Escuchar (comprender a hablantes nativos)',
-                'Leer (caracteres y vocabulario)', 'Escribir (gramática y estructura de oraciones)',
-                'Preparación para HSK/exámenes', 'Otro'],
-                q4Label: '¿Cuál es su mayor desafío al aprender chino?',
-                q4Hint: '(Seleccione hasta 2)',
-                q4Options: ['Pronunciación (tonos, pinyin)', 'Caracteres chinos (lectura/escritura)',
-                'Gramática (estructura de oraciones)', 'Falta de oportunidades de práctica',
-                'Recordar vocabulario', 'Otro'],
-                s2Title: 'Sección 2: Contenido y temas del curso',
-                s2Subtitle: 'Ayúdenos a entender qué quiere aprender en clase.',
-                q5Label: '¿Qué temas le gustaría tratar en clase?',
-                q5Hint: '(Seleccione hasta 5)',
-                q5Options: ['Saludos y presentaciones', 'Compras y regateo',
-                'Pedir comida y salir a cenar', 'Direcciones y transporte',
-                'Pasatiempos y tiempo libre', 'Clima y estaciones', 'Viajes y turismo',
-                'Trabajo y negocios', 'Cultura china (fiestas, tradiciones)',
-                'Cultura pop (películas, música, programas de TV)', 'Otro'],
-                q6Label: '¿Qué aspectos culturales de China le interesan más?',
-                q6Hint: '(Seleccione hasta 3)',
-                q6Options: ['Comida y cocina', 'Historia y dinastías',
-                'Fiestas (Fiesta de Primavera, Fiesta del Medio Otoño)',
-                'Artes tradicionales (caligrafía, ceremonia del té)',
-                'China moderna (tecnología, tendencias)',
-                'Diferencias regionales (Pekín vs Shanghái vs Cantón)', 'Otro'],
-                q7Label: '¿Cómo prefiere aprender la cultura china en clase?',
-                q7Hint: '(Seleccione hasta 2)',
-                q7Options: ['Videos cortos (ej: documentales, vlogs)',
-                'Historias y anécdotas', 'Juegos de rol (ej: representar una ceremonia del té)',
-                'Actividades prácticas (ej: escribir caligrafía)',
-                'Comparaciones con mi propia cultura', 'Otro'],
-                s3Title: 'Sección 3: Métodos de enseñanza y estilo de clase',
-                s3Subtitle: 'Ayúdenos a entender cómo aprende mejor.',
-                q8Label: '¿Cómo prefiere que el profesor equilibre el tiempo de clase?',
-                q8Options: ['Más explicación, menos práctica', 'Equilibrado (50% profesor, 50% práctica)',
-                'Más práctica, menos explicación', 'Principalmente dirigido por estudiantes (ej: discusiones, debates)'],
-                q9Label: '¿Qué tipos de actividades encuentra más útiles para aprender?',
-                q9Hint: '(Seleccione hasta 3)',
-                q9Options: ['Repetición y ejercicios (ej: repetir después del profesor)',
-                'Juegos de rol (ej: simular conversaciones de la vida real)',
-                'Juegos (ej: asociación de palabras, charadas)',
-                'Ejercicios de escucha (ej: podcasts, diálogos)',
-                'Tareas de escritura (ej: ensayos cortos, mensajes)',
-                'Discusiones en grupo', 'Otro'],
-                q10Label: '¿Cómo prefiere practicar el habla en clase?',
-                q10Hint: '(Seleccione hasta 2)',
-                q10Options: ['Individual con el profesor', 'Discusiones en grupos pequeños (2–4 estudiantes)',
-                'Discusiones con toda la clase', 'Grabarme y recibir comentarios', 'Otro'],
-                q11Label: '¿Cómo le gusta recibir correcciones?',
-                q11Options: ['Corrección inmediata (el profesor me detiene para corregir)',
-                'Corrección diferida (el profesor anota los errores y los revisa después)',
-                'Enfoque en ánimos (el profesor elogia más que corrige)',
-                'Corrección entre compañeros (otros estudiantes me ayudan a corregir)'],
-                q12Label: '¿Qué herramientas o recursos le gustaría usar en clase?',
-                q12Hint: '(Seleccione hasta 3)',
-                q12Options: ['Tarjetas de memoria (digitales o físicas)',
-                'Pizarra interactiva (ej: para escribir caracteres)',
-                'Videos (ej: clips cortos, películas)',
-                'Juegos (ej: Kahoot, Quizlet)',
-                'Herramientas de IA (ej: comentarios de pronunciación)',
-                'Libros de texto/cuadernos de trabajo', 'Otro'],
-                s4Title: 'Sección 4: Tareas y práctica',
-                s4Subtitle: 'Ayúdenos a asignarle el tipo de práctica adecuado.',
-                q13Label: '¿Qué tipo de tareas prefiere?',
-                q13Hint: '(Seleccione hasta 2)',
-                q13Options: ['Repasar material de clase (PPT, notas)',
-                'Ejercicios de escucha (ej: podcasts, diálogos)',
-                'Práctica de habla (ej: grabar mensajes de voz)',
-                'Tareas de escritura (ej: ensayos cortos, diario)',
-                'Ejercicios de vocabulario/gramática', 'Sin tareas', 'Otro'],
-                s5Title: 'Sección 5: Motivación y diversión en el aprendizaje',
-                s5Subtitle: '¡Ayúdenos a hacer las clases atractivas y divertidas!',
-                q14Label: '¿Qué lo motiva más a aprender chino?',
-                q14Hint: '(Seleccione hasta 2)',
-                q14Options: ['Aprender una frase útil que pueda usar de inmediato',
-                'Entender un chiste o meme chino',
-                'Completar una tarea de conversación con éxito',
-                'Recibir comentarios positivos del profesor', 'Otro'],
-                q15Label: '¿Qué haría las clases de chino más divertidas para usted?',
-                q15Placeholder: 'Comparta sus ideas...',
-                q16Label: '¿Hay algo que desearía que sus anteriores profesores de chino hubieran hecho diferente?',
-                q16Placeholder: 'Comparta sus pensamientos...',
-                s6Title: 'Sección 6: Comentarios adicionales',
-                s6Subtitle: '¿Algún otro pensamiento o sugerencia?',
-                q17Label: '¿Tiene alguna otra sugerencia para nuestros cursos de chino?',
-                q17Placeholder: 'Comparta sus sugerencias...',
-                q18Label: '¿Le interesaría unirse a una clase de prueba gratuita para experimentar nuestro estilo de enseñanza?',
-                q18Options: ['¡Sí, me encantaría!', 'Tal vez, por favor contácteme después.', 'No, gracias.'],
-                submitBtn: '📤 Enviar encuesta',
-                submitNote: '¡Agradecemos su tiempo y sus comentarios!',
-                modalTitle: '📊 Resultados de la encuesta',
-                closeBtn: 'Cerrar',
-                otherPlaceholder: 'Por favor especifique...',
-                thankYou: '¡Gracias por completar la encuesta!',
-                selectMore: 'Puede seleccionar hasta',
-                selections: 'más',
-                selection: 'más',
-            }
-        };
+<script>
+/* ================================================================
+   LANGUAGE PACKAGES
+   ================================================================ */
+const L={
+en:{
+    h_title:'Chinese Learning Preferences Survey',
+    h_desc:'Thank you for taking the time to help us improve our Chinese courses! This survey takes about 5–7 minutes.',
+    btn_submit:'Submit Survey',btn_sub:'We appreciate your time and feedback!',
+    m_title:'📊 Your Responses',m_close:'Close',other_ph:'Please specify…',
+    s1t:'Section 1: About Your Chinese Learning Goals',s1s:'Help us understand why you\'re learning Chinese and what you hope to achieve.',
+    s2t:'Section 2: Course Content & Topics',s2s:'Help us understand what you want to learn in class.',
+    s3t:'Section 3: Teaching Methods & Class Style',s3s:'Help us understand how you learn best.',
+    s4t:'Section 4: Homework & Practice',s4s:'Help us assign the right kind of practice for you.',
+    s5t:'Section 5: Motivation & Fun in Learning',s5s:'Help us make classes engaging and enjoyable!',
+    s6t:'Section 6: Additional Feedback',s6s:'Any other thoughts or suggestions?',
+    q1t:'What is your primary reason for learning Chinese?',q1h:'(Select up to 3)',
+    q2t:'What is your current Chinese level?',q2h:'',
+    q3t:'What specific skills do you want to improve the most?',q3h:'(Select up to 3)',
+    q4t:'What is your biggest challenge when learning Chinese?',q4h:'(Select up to 2)',
+    q5t:'Which topics would you like to focus on in class?',q5h:'(Select up to 5)',
+    q6t:'Which cultural aspects of China interest you the most?',q6h:'(Select up to 3)',
+    q7t:'How do you prefer to learn Chinese culture in class?',q7h:'(Select up to 2)',
+    q8t:'How do you prefer the teacher to balance class time?',q8h:'',
+    q9t:'What types of activities do you find most helpful?',q9h:'(Select up to 3)',
+    q10t:'How do you prefer to practice speaking in class?',q10h:'(Select up to 2)',
+    q11t:'How do you like to receive corrections?',q11h:'',
+    q12t:'What tools or resources would you like to use in class?',q12h:'(Select up to 3)',
+    q13t:'What type of homework would you prefer?',q13h:'(Select up to 2)',
+    q14t:'What makes you feel most motivated to learn Chinese?',q14h:'(Select up to 2)',
+    q15t:'What would make Chinese classes more fun for you?',q15h:'',
+    q16t:'Is there anything you wish your previous Chinese teachers had done differently?',q16h:'',
+    q17t:'Do you have any other suggestions for our Chinese courses?',q17h:'',
+    sending:'Sending…',send_fail:'Failed to send. Please try again.',send_success:'Survey submitted successfully!',
+    q1:['Work / business','Travel in China','Personal interest / culture','Connecting with Chinese friends / family','Academic studies (e.g., university course)','Other'],
+    q2:['Absolute beginner (no prior knowledge)','Beginner (can say simple phrases like greetings)','Elementary (can hold basic conversations)','Intermediate (can discuss daily topics)','Advanced (can discuss complex topics)'],
+    q3:['Speaking (fluency & pronunciation)','Listening (understanding native speakers)','Reading (characters & vocabulary)','Writing (grammar & sentence structure)','HSK / Exam preparation','Other'],
+    q4:['Pronunciation (tones, pinyin)','Chinese characters (reading / writing)','Grammar (sentence structure)','Lack of practice opportunities','Remembering vocabulary','Other'],
+    q5:['Greetings & introductions','Shopping & bargaining','Ordering food & dining out','Directions & transportation','Hobbies & free time','Weather & seasons','Travel & tourism','Work & business','Chinese culture (festivals, traditions)','Pop culture (movies, music, TV shows)','Other'],
+    q6:['Food & cuisine','History & dynasties','Festivals (Spring Festival, Mid-Autumn Festival)','Traditional arts (calligraphy, tea ceremony)','Modern China (technology, trends)','Regional differences (Beijing vs. Shanghai vs. Guangzhou)','Other'],
+    q7:['Short videos (e.g., documentaries, vlogs)','Stories & anecdotes','Role-playing (e.g., acting out a tea ceremony)','Hands-on activities (e.g., writing calligraphy)','Comparisons with my own culture','Other'],
+    q8:['More teacher explanation, less student practice','Balanced (50/50 teacher–student)','More student practice, less teacher talk','Mostly student-led (e.g., discussions, debates)'],
+    q9:['Repetition & drills (e.g., repeating after the teacher)','Role-playing (e.g., simulating real-life conversations)','Games (e.g., word matching, charades)','Listening exercises (e.g., podcasts, dialogues)','Writing tasks (e.g., short essays, messages)','Group discussions','Other'],
+    q10:['One-on-one with the teacher','Small group discussions (2–4 students)','Whole-class discussions','Recording myself & getting feedback','Other'],
+    q11:['Immediate correction (teacher stops me to fix mistakes)','Delayed correction (teacher notes errors & reviews later)','Encouragement-focused (teacher praises more than correcting)','Peer correction (other students help correct me)'],
+    q12:['Flashcards (digital or physical)','Interactive whiteboard (e.g., for writing characters)','Videos (e.g., short clips, movies)','Games (e.g., Kahoot, Quizlet)','AI tools (e.g., pronunciation feedback)','Textbooks / workbooks','Other'],
+    q13:['Reviewing class materials (PPT, notes)','Listening exercises (e.g., podcasts, dialogues)','Speaking practice (e.g., recording voice messages)','Writing tasks (e.g., short essays, journal entries)','Vocabulary / grammar drills','No homework','Other'],
+    q14:['Learning a useful phrase I can use right away','Understanding a Chinese joke or meme','Completing a conversation task successfully','Receiving positive feedback from the teacher','Other'],
+},
+de:{
+    h_title:'Umfrage zu chinesischen Lernpräferenzen',
+    h_desc:'Vielen Dank für Ihre Zeit! Diese Umfrage dauert etwa 5–7 Minuten.',
+    btn_submit:'Umfrage absenden',btn_sub:'Wir schätzen Ihre Zeit und Ihr Feedback!',
+    m_title:'📊 Ihre Antworten',m_close:'Schließen',other_ph:'Bitte angeben…',
+    s1t:'Abschnitt 1: Ihre Lernziele',s1s:'Helfen Sie uns zu verstehen, warum Sie Chinesisch lernen.',
+    s2t:'Abschnitt 2: Kursinhalte & Themen',s2s:'Was möchten Sie im Kurs lernen?',
+    s3t:'Abschnitt 3: Lehrmethoden & Kursstil',s3s:'Wie lernen Sie am besten?',
+    s4t:'Abschnitt 4: Hausaufgaben & Übung',s4s:'Welche Übungsart passt zu Ihnen?',
+    s5t:'Abschnitt 5: Motivation & Spaß',s5s:'Helfen Sie uns, den Kurs unterhaltsam zu gestalten!',
+    s6t:'Abschnitt 6: Zusätzliches Feedback',s6s:'Weitere Gedanken oder Vorschläge?',
+    q1t:'Was ist Ihr Hauptgrund, Chinesisch zu lernen?',q1h:'(Bis zu 3 auswählen)',
+    q2t:'Was ist Ihr aktuelles Chinesisch-Niveau?',q2h:'',
+    q3t:'Welche Fähigkeiten möchten Sie am meisten verbessern?',q3h:'(Bis zu 3 auswählen)',
+    q4t:'Was ist Ihre größte Herausforderung beim Chinesischlernen?',q4h:'(Bis zu 2 auswählen)',
+    q5t:'Welche Themen möchten Sie im Kurs behandeln?',q5h:'(Bis zu 5 auswählen)',
+    q6t:'Welche kulturellen Aspekte Chinas interessieren Sie am meisten?',q6h:'(Bis zu 3 auswählen)',
+    q7t:'Wie lernen Sie chinesische Kultur im Kurs am liebsten?',q7h:'(Bis zu 2 auswählen)',
+    q8t:'Wie soll der Lehrer die Kurszeit aufteilen?',q8h:'',
+    q9t:'Welche Aktivitäten helfen Ihnen beim Lernen am meisten?',q9h:'(Bis zu 3 auswählen)',
+    q10t:'Wie üben Sie im Kurs am liebsten das Sprechen?',q10h:'(Bis zu 2 auswählen)',
+    q11t:'Wie möchten Sie Korrekturen erhalten?',q11h:'',
+    q12t:'Welche Tools / Ressourcen möchten Sie im Kurs verwenden?',q12h:'(Bis zu 3 auswählen)',
+    q13t:'Welche Art von Hausaufgaben bevorzugen Sie?',q13h:'(Bis zu 2 auswählen)',
+    q14t:'Was motiviert Sie am meisten, Chinesisch zu lernen?',q14h:'(Bis zu 2 auswählen)',
+    q15t:'Was würde den Chinesischkurs für Sie unterhaltsamer machen?',q15h:'',
+    q16t:'Gibt es etwas, das Ihre früheren Chinesischlehrer anders gemacht hätten sollen?',q16h:'',
+    q17t:'Haben Sie weitere Vorschläge für unsere Chinesischkurse?',q17h:'',
+    sending:'Wird gesendet…',send_fail:'Senden fehlgeschlagen. Bitte versuchen Sie es erneut.',send_success:'Umfrage erfolgreich abgesendet!',
+    q1:['Arbeit / Wirtschaft','Reisen in China','Persönliches Interesse / Kultur','Kontakt zu chinesischen Freunden / Familie','Studium (z.B. Universitätskurs)','Sonstiges'],
+    q2:['Absolute Anfänger (keine Vorkenntnisse)','Anfänger (einfache Sätze wie Begrüßungen)','Grundstufe (einfache Gespräche)','Mittelstufe (alltägliche Themen)','Fortgeschritten (komplexe Themen)'],
+    q3:['Sprechen (Fluss & Aussprache)','Hören (Muttersprachler verstehen)','Lesen (Zeichen & Wortschatz)','Schreiben (Grammatik & Satzbau)','HSK / Prüfungsvorbereitung','Sonstiges'],
+    q4:['Aussprache (Töne, Pinyin)','Chinesische Zeichen (Lesen / Schreiben)','Grammatik (Satzbau)','Mangelnde Übungsmöglichkeiten','Vokabeln merken','Sonstiges'],
+    q5:['Begrüßungen & Vorstellungen','Einkaufen & Feilschen','Essen bestellen & ausgehen','Wegbeschreibung & Transport','Hobbys & Freizeit','Wetter & Jahreszeiten','Reisen & Tourismus','Arbeit & Wirtschaft','Chinesische Kultur (Feste, Traditionen)','Popkultur (Filme, Musik, TV)','Sonstiges'],
+    q6:['Essen & Küche','Geschichte & Dynastien','Feste (Frühlingsfest, Herbstfest)','Traditionelle Kunst (Kalligrafie, Teezeremonie)','Modernes China (Technologie, Trends)','Regionale Unterschiede (Peking vs. Shanghai vs. Guangzhou)','Sonstiges'],
+    q7:['Kurze Videos (z.B. Dokus, Vlogs)','Geschichten & Anekdoten','Rollenspiele (z.B. Teezeremonie)','Praktische Aktivitäten (z.B. Kalligrafie)','Vergleiche mit meiner eigenen Kultur','Sonstiges'],
+    q8:['Mehr Erklärung, weniger Übung','Ausgewogen (50 / 50)','Mehr Übung, weniger Erklärung','Meist schülergeführt (Diskussionen, Debatten)'],
+    q9:['Wiederholung & Übungen','Rollenspiele (Alltagssimulationen)','Spiele (Wortspiele, Ratespiele)','Hörübungen (Podcasts, Dialoge)','Schreibaufgaben (kurze Texte)','Gruppendiskussionen','Sonstiges'],
+    q10:['Eins-zu-eins mit dem Lehrer','Kleingruppen (2–4 Schüler)','Gesamtklassengespräche','Selbst aufnehmen & Feedback erhalten','Sonstiges'],
+    q11:['Sofortige Korrektur','Verzögerte Korrektur','Ermutigungsorientiert (Lob statt Korrektur)','Korrektur durch Mitschüler'],
+    q12:['Kartenkästen (digital / physisch)','Interaktive Tafel','Videos (kurze Clips, Filme)','Spiele (Kahoot, Quizlet)','KI-Tools (Aussprache-Feedback)','Lehrbücher / Arbeitshefte','Sonstiges'],
+    q13:['Kursmaterial durchgehen','Hörübungen','Sprechübungen (Sprachnachrichten)','Schreibaufgaben (Texte, Tagebuch)','Vokabel-/Grammatikübungen','Keine Hausaufgaben','Sonstiges'],
+    q14:['Nützlichen Satz sofort anwenden','Chinesischen Witz / Meme verstehen','Gesprächsaufgabe erfolgreich abschließen','Positives Feedback vom Lehrer','Sonstiges'],
+},
+fr:{
+    h_title:'Enquête sur les préférences d\'apprentissage du chinois',
+    h_desc:'Merci de prendre le temps de nous aider à améliorer nos cours ! Cette enquête prend environ 5–7 minutes.',
+    btn_submit:'Envoyer l\'enquête',btn_sub:'Nous apprécions votre temps et vos retours !',
+    m_title:'📊 Vos réponses',m_close:'Fermer',other_ph:'Veuillez préciser…',
+    s1t:'Section 1 : Vos objectifs d\'apprentissage',s1s:'Aidez-nous à comprendre pourquoi vous apprenez le chinois.',
+    s2t:'Section 2 : Contenu et sujets du cours',s2s:'Qu\'est-ce que vous voulez apprendre en classe ?',
+    s3t:'Section 3 : Méthodes d\'enseignement',s3s:'Comment apprenez-vous le mieux ?',
+    s4t:'Section 4 : Devoirs et pratique',s4s:'Quel type de pratique vous convient ?',
+    s5t:'Section 5 : Motivation et plaisir',s5s:'Aidez-nous à rendre les cours engageants et agréables !',
+    s6t:'Section 6 : Commentaires supplémentaires',s6s:'D\'autres pensées ou suggestions ?',
+    q1t:'Quelle est votre raison principale d\'apprendre le chinois ?',q1h:'(Sélectionnez jusqu\'à 3)',
+    q2t:'Quel est votre niveau actuel de chinois ?',q2h:'',
+    q3t:'Quelles compétences souhaitez-vous le plus améliorer ?',q3h:'(Sélectionnez jusqu\'à 3)',
+    q4t:'Quel est votre plus grand défi pour apprendre le chinois ?',q4h:'(Sélectionnez jusqu\'à 2)',
+    q5t:'Quels sujets souhaitez-vous aborder en classe ?',q5h:'(Sélectionnez jusqu\'à 5)',
+    q6t:'Quels aspects culturels de la Chine vous intéressent le plus ?',q6h:'(Sélectionnez jusqu\'à 3)',
+    q7t:'Comment préférez-vous apprendre la culture chinoise en classe ?',q7h:'(Sélectionnez jusqu\'à 2)',
+    q8t:'Comment préférez-vous que le temps de classe soit divisé ?',q8h:'',
+    q9t:'Quelles activités trouvez-vous les plus utiles ?',q9h:'(Sélectionnez jusqu\'à 3)',
+    q10t:'Comment préférez-vous pratiquer la parole en classe ?',q10h:'(Sélectionnez jusqu\'à 2)',
+    q11t:'Comment aimez-vous recevoir des corrections ?',q11h:'',
+    q12t:'Quels outils ou ressources souhaitez-vous utiliser ?',q12h:'(Sélectionnez jusqu\'à 3)',
+    q13t:'Quel type de devoirs préférez-vous ?',q13h:'(Sélectionnez jusqu\'à 2)',
+    q14t:'Qu\'est-ce qui vous motive le plus à apprendre le chinois ?',q14h:'(Sélectionnez jusqu\'à 2)',
+    q15t:'Qu\'est-ce qui rendrait les cours de chinois plus amusants ?',q15h:'',
+    q16t:'Y a-t-il quelque chose que vos anciens professeurs auraient pu faire différemment ?',q16h:'',
+    q17t:'Avez-vous d\'autres suggestions pour nos cours de chinois ?',q17h:'',
+    sending:'Envoi en cours…',send_fail:'Échec de l\'envoi. Veuillez réessayer.',send_success:'Enquête envoyée avec succès !',
+    q1:['Travail / affaires','Voyage en Chine','Intérêt personnel / culture','Connexion avec des amis / famille chinois','Études universitaires','Autre'],
+    q2:['Débutant absolu (aucune connaissance)','Débutant (phrases simples)','Élémentaire (conversations de base)','Intermédiaire (sujets quotidiens)','Avancé (sujets complexes)'],
+    q3:['Parler (fluidité et prononciation)','Écouter (comprendre les natifs)','Lire (caractères et vocabulaire)','Écrire (grammaire et syntaxe)','Préparation HSK / examen','Autre'],
+    q4:['Prononciation (tons, pinyin)','Caractères chinois (lecture / écriture)','Grammaire (syntaxe)','Manque de pratique','Mémoriser le vocabulaire','Autre'],
+    q5:['Salutations et présentations','Achats et marchandage','Commander à manger','Directions et transport','Loisirs et temps libre','Météo et saisons','Voyage et tourisme','Travail et affaires','Culture chinoise','Culture pop (films, musique, TV)','Autre'],
+    q6:['Nourriture et cuisine','Histoire et dynasties','Fêtes traditionnelles','Arts traditionnels','Chine moderne','Différences régionales','Autre'],
+    q7:['Courtes vidéos','Histoires et anecdotes','Jeux de rôle','Activités pratiques','Comparaisons avec ma culture','Autre'],
+    q8:['Plus d\'explication, moins de pratique','Équilibré (50/50)','Plus de pratique, moins d\'explication','Principalement dirigé par les étudiants'],
+    q9:['Répétition et exercices','Jeux de rôle','Jeux linguistiques','Exercices d\'écoute','Tâches d\'écriture','Discussions de groupe','Autre'],
+    q10:['En tête-à-tête avec l\'enseignant','Petits groupes (2–4 étudiants)','Discussions en classe entière','S\'enregistrer et obtenir des retours','Autre'],
+    q11:['Correction immédiate','Correction différée','Encouragement (féliciter plutôt que corriger)','Correction par les pairs'],
+    q12:['Cartes mémoire','Tableau blanc interactif','Vidéos (clips, films)','Jeux (Kahoot, Quizlet)','Outils IA','Manuels / cahiers','Autre'],
+    q13:['Réviser le matériel de cours','Exercices d\'écoute','Pratique de la parole','Tâches d\'écriture','Exercices vocab / grammaire','Pas de devoirs','Autre'],
+    q14:['Apprendre une phrase utile tout de suite','Comprendre une blague chinoise','Réussir une tâche de conversation','Recevoir des retours positifs','Autre'],
+},
+es:{
+    h_title:'Encuesta de preferencias de aprendizaje de chino',
+    h_desc:'¡Gracias por tomarse el tiempo! Esta encuesta toma unos 5–7 minutos.',
+    btn_submit:'Enviar encuesta',btn_sub:'¡Agradecemos su tiempo y sus comentarios!',
+    m_title:'📊 Sus respuestas',m_close:'Cerrar',other_ph:'Por favor especifique…',
+    s1t:'Sección 1: Sus objetivos de aprendizaje',s1s:'Ayúdenos a entender por qué está aprendiendo chino.',
+    s2t:'Sección 2: Contenido y temas del curso',s2s:'¿Qué quiere aprender en clase?',
+    s3t:'Sección 3: Métodos de enseñanza y estilo',s3s:'¿Cómo aprende mejor?',
+    s4t:'Sección 4: Tareas y práctica',s4s:'¿Qué tipo de práctica le conviene?',
+    s5t:'Sección 5: Motivación y diversión',s5s:'¡Ayúdenos a hacer las clases atractivas y divertidas!',
+    s6t:'Sección 6: Comentarios adicionales',s6s:'¿Algún otro pensamiento o sugerencia?',
+    q1t:'¿Cuál es su razón principal para aprender chino?',q1h:'(Seleccione hasta 3)',
+    q2t:'¿Cuál es su nivel actual de chino?',q2h:'',
+    q3t:'¿Qué habilidades quiere mejorar más?',q3h:'(Seleccione hasta 3)',
+    q4t:'¿Cuál es su mayor desafío al aprender chino?',q4h:'(Seleccione hasta 2)',
+    q5t:'¿Qué temas le gustaría tratar en clase?',q5h:'(Seleccione hasta 5)',
+    q6t:'¿Qué aspectos culturales de China le interesan más?',q6h:'(Seleccione hasta 3)',
+    q7t:'¿Cómo prefiere aprender la cultura china en clase?',q7h:'(Seleccione hasta 2)',
+    q8t:'¿Cómo prefiere que se divida el tiempo de clase?',q8h:'',
+    q9t:'¿Qué actividades le resultan más útiles para aprender?',q9h:'(Seleccione hasta 3)',
+    q10t:'¿Cómo prefiere practicar el habla en clase?',q10h:'(Seleccione hasta 2)',
+    q11t:'¿Cómo le gusta recibir correcciones?',q11h:'',
+    q12t:'¿Qué herramientas o recursos le gustaría usar en clase?',q12h:'(Seleccione hasta 3)',
+    q13t:'¿Qué tipo de tareas prefiere?',q13h:'(Seleccione hasta 2)',
+    q14t:'¿Qué lo motiva más a aprender chino?',q14h:'(Seleccione hasta 2)',
+    q15t:'¿Qué haría las clases de chino más divertidas para usted?',q15h:'',
+    q16t:'¿Hay algo que sus anteriores profesores de chino podrían haber hecho diferente?',q16h:'',
+    q17t:'¿Tiene alguna otra sugerencia para nuestros cursos de chino?',q17h:'',
+    sending:'Enviando…',send_fail:'Error al enviar. Por favor intente de nuevo.',send_success:'¡Encuesta enviada con éxito!',
+    q1:['Trabajo / negocios','Viajar a China','Interés personal / cultura','Conectar con amigos / familiares chinos','Estudios académicos','Otro'],
+    q2:['Principiante absoluto (sin conocimientos)','Principiante (frases simples)','Básico (conversaciones sencillas)','Intermedio (temas cotidianos)','Avanzado (temas complejos)'],
+    q3:['Hablar (fluidez y pronunciación)','Escuchar (comprender nativos)','Leer (caracteres y vocabulario)','Escribir (gramática y sintaxis)','Preparación HSK / examen','Otro'],
+    q4:['Pronunciación (tonos, pinyin)','Caracteres chinos (lectura / escritura)','Gramática (sintaxis)','Falta de oportunidades de práctica','Recordar vocabulario','Otro'],
+    q5:['Saludos y presentaciones','Compras y regateo','Pedir comida y cenar','Direcciones y transporte','Pasatiempos y tiempo libre','Clima y estaciones','Viajes y turismo','Trabajo y negocios','Cultura china','Cultura pop (películas, música, TV)','Otro'],
+    q6:['Comida y cocina','Historia y dinastías','Fiestas tradicionales','Artes tradicionales','China moderna','Diferencias regionales','Otro'],
+    q7:['Videos cortos','Historias y anécdotas','Juegos de rol','Actividades prácticas','Comparaciones con mi cultura','Otro'],
+    q8:['Más explicación, menos práctica','Equilibrado (50/50)','Más práctica, menos explicación','Principalmente dirigido por estudiantes'],
+    q9:['Repetición y ejercicios','Juegos de rol','Juegos lingüísticos','Ejercicios de escucha','Tareas de escritura','Discusiones en grupo','Otro'],
+    q10:['Individual con el profesor','Grupos pequeños (2–4 estudiantes)','Discusiones con toda la clase','Grabarme y recibir comentarios','Otro'],
+    q11:['Corrección inmediata','Corrección diferida','Enfoque en ánimos (elogiar más que corregir)','Corrección entre compañeros'],
+    q12:['Tarjetas de memoria','Pizarra interactiva','Videos (clips, películas)','Juegos (Kahoot, Quizlet)','Herramientas de IA','Libros de texto / cuadernos','Otro'],
+    q13:['Repasar material de clase','Ejercicios de escucha','Práctica de habla','Tareas de escritura','Ejercicios de vocab / gramática','Sin tareas','Otro'],
+    q14:['Aprender una frase útil de inmediato','Entender un chiste o meme chino','Completar una tarea de conversación','Recibir comentarios positivos','Otro'],
+}
+};
 
-        // ==================== STATE ====================
-        let currentLang = 'en';
-        const selections = {}; // Track selections per question
-        const maxSelections = {
-            q1: 3,
-            q3: 3,
-            q4: 2,
-            q5: 5,
-            q6: 3,
-            q7: 2,
-            q9: 3,
-            q10: 2,
-            q12: 3,
-            q13: 2,
-            q14: 2
-        };
+/* ================================================================
+   QUESTION CONFIG
+   ================================================================ */
+const Q={
+q1:{type:'c',max:3,other:true},q2:{type:'r',max:1,other:false},
+q3:{type:'c',max:3,other:true},q4:{type:'c',max:2,other:true},
+q5:{type:'c',max:5,other:true},q6:{type:'c',max:3,other:true},
+q7:{type:'c',max:2,other:true},q8:{type:'r',max:1,other:false},
+q9:{type:'c',max:3,other:true},q10:{type:'c',max:2,other:true},
+q11:{type:'r',max:1,other:false},q12:{type:'c',max:3,other:true},
+q13:{type:'c',max:2,other:true},q14:{type:'c',max:2,other:true},
+q15:{type:'t'},q16:{type:'t'},q17:{type:'t'}
+};
 
-        // ==================== FUNCTIONS ====================
-        function switchLanguage(lang) {
-            currentLang = lang;
-            const t = translations[lang];
+let curLang='en';
+const ENDPOINT='https://formspree.io/f/mdaqakev';
 
-            // Update header
-            document.getElementById('headerTitle').textContent = t.headerTitle;
-            document.getElementById('headerSubtitle').textContent = t.headerSubtitle;
-
-            // Update section titles/subtitles
-            document.getElementById('s1Title').textContent = t.s1Title;
-            document.getElementById('s1Subtitle').textContent = t.s1Subtitle;
-            document.getElementById('s2Title').textContent = t.s2Title;
-            document.getElementById('s2Subtitle').textContent = t.s2Subtitle;
-            document.getElementById('s3Title').textContent = t.s3Title;
-            document.getElementById('s3Subtitle').textContent = t.s3Subtitle;
-            document.getElementById('s4Title').textContent = t.s4Title;
-            document.getElementById('s4Subtitle').textContent = t.s4Subtitle;
-            document.getElementById('s5Title').textContent = t.s5Title;
-            document.getElementById('s5Subtitle').textContent = t.s5Subtitle;
-            document.getElementById('s6Title').textContent = t.s6Title;
-            document.getElementById('s6Subtitle').textContent = t.s6Subtitle;
-
-            // Update question labels
-            document.getElementById('q1Label').textContent = t.q1Label;
-            document.getElementById('q1Hint').textContent = t.q1Hint;
-            document.getElementById('q2Label').textContent = t.q2Label;
-            document.getElementById('q3Label').textContent = t.q3Label;
-            document.getElementById('q3Hint').textContent = t.q3Hint;
-            document.getElementById('q4Label').textContent = t.q4Label;
-            document.getElementById('q4Hint').textContent = t.q4Hint;
-            document.getElementById('q5Label').textContent = t.q5Label;
-            document.getElementById('q5Hint').textContent = t.q5Hint;
-            document.getElementById('q6Label').textContent = t.q6Label;
-            document.getElementById('q6Hint').textContent = t.q6Hint;
-            document.getElementById('q7Label').textContent = t.q7Label;
-            document.getElementById('q7Hint').textContent = t.q7Hint;
-            document.getElementById('q8Label').textContent = t.q8Label;
-            document.getElementById('q9Label').textContent = t.q9Label;
-            document.getElementById('q9Hint').textContent = t.q9Hint;
-            document.getElementById('q10Label').textContent = t.q10Label;
-            document.getElementById('q10Hint').textContent = t.q10Hint;
-            document.getElementById('q11Label').textContent = t.q11Label;
-            document.getElementById('q12Label').textContent = t.q12Label;
-            document.getElementById('q12Hint').textContent = t.q12Hint;
-            document.getElementById('q13Label').textContent = t.q13Label;
-            document.getElementById('q13Hint').textContent = t.q13Hint;
-            document.getElementById('q14Label').textContent = t.q14Label;
-            document.getElementById('q14Hint').textContent = t.q14Hint;
-            document.getElementById('q15Label').textContent = t.q15Label;
-            document.getElementById('q16Label').textContent = t.q16Label;
-            document.getElementById('q17Label').textContent = t.q17Label;
-            document.getElementById('q18Label').textContent = t.q18Label;
-
-            // Update placeholders
-            document.getElementById('q15Textarea').placeholder = t.q15Placeholder;
-            document.getElementById('q16Textarea').placeholder = t.q16Placeholder;
-            document.getElementById('q17Textarea').placeholder = t.q17Placeholder;
-
-            // Update submit button
-            document.getElementById('submitBtn').innerHTML = t.submitBtn;
-            document.getElementById('submitNote').textContent = t.submitNote;
-
-            // Update modal
-            document.getElementById('modalTitle').textContent = t.modalTitle;
-            document.getElementById('closeBtn').textContent = t.closeBtn;
-
-            // Update language buttons
-            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-            const activeBtn = document.querySelector(`.lang-btn[onclick="switchLanguage('${lang}')"]`);
-            if (activeBtn) activeBtn.classList.add('active');
-
-            // Re-render all options
-            renderAllOptions();
-
-            // Update counters
-            updateAllCounters();
-
-            // Update progress
-            updateProgress();
-        }
-
-        function renderAllOptions() {
-            const t = translations[currentLang];
-
-            // Render checkbox/radio options for each question
-            const questionIds = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10', 'q11', 'q12', 'q13', 'q14', 'q18'];
-            questionIds.forEach(qId => {
-                const container = document.getElementById(qId + 'Options');
-                if (!container) return;
-                const options = t[qId + 'Options'];
-                if (!options) return;
-
-                const isRadio = ['q2', 'q8', 'q11', 'q18'].includes(qId);
-                const inputType = isRadio ? 'radio' : 'checkbox';
-                const inputName = qId;
-
-                container.innerHTML = options.map((opt, idx) => {
-                    const isOther = opt.toLowerCase() === 'other' || opt.toLowerCase() === 'sonstiges' ||
-                        opt.toLowerCase() === 'autre' || opt.toLowerCase() === 'otro';
-                    const optionValue = isOther ? '__other__' : opt;
-                    const uniqueId = `${qId}_${idx}`;
-
-                    return `
-                        <label class="option" for="${uniqueId}">
-                            <input type="${inputType}" id="${uniqueId}" name="${inputName}" value="${optionValue}"
-                                onchange="handleSelection('${qId}', this, ${isOther})">
-                            <span class="option-label">${opt}</span>
-                        </label>
-                        ${isOther ? `<div class="other-input" id="${qId}_other_input">
-                            <input type="text" placeholder="${t.otherPlaceholder}" id="${qId}_other_text" oninput="updateProgress()">
-                        </div>` : ''}
-                    `;
-                }).join('');
-            });
-        }
-
-        function handleSelection(qId, input, isOther) {
-            const max = maxSelections[qId];
-            const container = document.getElementById(qId + 'Options');
-            const isRadio = input.type === 'radio';
-
-            if (isRadio) {
-                // Radio: just update visual state
-                container.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
-                input.closest('.option').classList.add('selected');
-                selections[qId] = [input.value];
-            } else {
-                // Checkbox: enforce max
-                const checked = container.querySelectorAll('input[type="checkbox"]:checked');
-                if (max && checked.length > max) {
-                    input.checked = false;
-                    const t = translations[currentLang];
-                    const remaining = max - (checked.length - 1);
-                    alert(`${t.selectMore} ${max} ${remaining > 1 ? t.selections : t.selection}`);
-                    return;
-                }
-                // Update visual state
-                container.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
-                container.querySelectorAll('input[type="checkbox"]:checked').forEach(chk => {
-                    chk.closest('.option').classList.add('selected');
-                });
-                selections[qId] = Array.from(checked).map(c => c.value);
-            }
-
-            // Show/hide other input
-            if (isOther) {
-                const otherInput = document.getElementById(qId + '_other_input');
-                if (otherInput) {
-                    otherInput.classList.toggle('visible', input.checked);
-                    if (!input.checked) {
-                        const otherText = document.getElementById(qId + '_other_text');
-                        if (otherText) otherText.value = '';
-                    }
-                }
-            }
-
-            updateCounter(qId);
-            updateProgress();
-        }
-
-        function updateCounter(qId) {
-            const max = maxSelections[qId];
-            if (!max) return;
-            const counter = document.getElementById('counter-' + qId);
-            if (!counter) return;
-            const container = document.getElementById(qId + 'Options');
-            const checked = container ? container.querySelectorAll('input[type="checkbox"]:checked').length : 0;
-            counter.textContent = `${checked}/${max}`;
-            counter.classList.remove('warning', 'ok');
-            if (checked === max) {
-                counter.classList.add('ok');
-            } else if (checked >= max - 1) {
-                counter.classList.add('warning');
-            }
-        }
-
-        function updateAllCelections() {
-            Object.keys(maxSelections).forEach(qId => updateCounter(qId));
-        }
-
-        function updateProgress() {
-            const totalQuestions = 18;
-            let answered = 0;
-
-            // Check each question
-            for (let i = 1; i <= totalQuestions; i++) {
-                const qId = 'q' + i;
-                const container = document.getElementById(qId + 'Options');
-                if (container) {
-                    const checked = container.querySelectorAll('input:checked');
-                    if (checked.length > 0) {
-                        // Check if "other" is selected but empty
-                        const otherChecked = Array.from(checked).some(c => c.value === '__other__');
-                        if (otherChecked) {
-                            const otherText = document.getElementById(qId + '_other_text');
-                            if (otherText && otherText.value.trim() === '') {
-                                continue; // Don't count as answered
-                            }
-                        }
-                        answered++;
-                    }
-                } else {
-                    // Textarea questions
-                    const textarea = document.getElementById(qId + 'Textarea');
-                    if (textarea && textarea.value.trim() !== '') {
-                        answered++;
-                    }
-                }
-            }
-
-            const percentage = Math.round((answered / totalQuestions) * 100);
-            document.getElementById('progressBar').style.width = percentage + '%';
-            document.getElementById('progressText').textContent = percentage + '%';
-        }
-
-        async function submitSurvey() {
-            const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mdaqakev';
-            const t = translations[currentLang];
-            const results = [];
-
-            // Collect all answers
-            for (let i = 1; i <= 18; i++) {
-                const qId = 'q' + i;
-                const container = document.getElementById(qId + 'Options');
-                const label = document.getElementById(qId + 'Label');
-                const labelText = label ? label.textContent.replace(/\(.*\)/, '').trim() : qId;
-
-                if (container) {
-                    const checked = container.querySelectorAll('input:checked');
-                    const values = Array.from(checked).map(c => {
-                        if (c.value === '__other__') {
-                            const otherText = document.getElementById(qId + '_other_text');
-                            return otherText && otherText.value.trim() ? `Other: ${otherText.value.trim()}` : 'Other';
-                        }
-                        return c.value;
-                    });
-                    if (values.length > 0) {
-                        results.push({ label: labelText, values: values });
-                    }
-                } else {
-                    const textarea = document.getElementById(qId + 'Textarea');
-                    if (textarea && textarea.value.trim() !== '') {
-                        results.push({ label: labelText, values: [textarea.value.trim()] });
-                    }
-                }
-            }
-        }   
-            // Display results
-           // ★★★ 替换整个这块代码 ★★★
-// 先显示加载状态
-const submitBtn = document.getElementById('submitBtn');
-const originalText = submitBtn.innerHTML;
-submitBtn.innerHTML = '⏳ Submitting...';
-submitBtn.disabled = true;
-
-try {
-    // 构建提交数据
-    const formData = {};
-    results.forEach(r => {
-        formData[r.label] = r.values.join(', ');
-    });
-    formData['_language'] = currentLang.toUpperCase();
-    formData['_submitted_at'] = new Date().toISOString();
-
-    // 发送到 Formspree
-    const response = await fetch(FORMSPREE_ENDPOINT, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify(formData)
-    });
-
-    // 恢复按钮
-    submitBtn.innerHTML = originalText;
-    submitBtn.disabled = false;
-
-    if (response.ok) {
-        // 提交成功 - 显示结果
-        const resultsContent = document.getElementById('resultsContent');
-        if (results.length === 0) {
-            resultsContent.innerHTML = `<p style="text-align:center;color:var(--text-light);">No responses recorded.</p>`;
-        } else {
-            resultsContent.innerHTML = results.map(r => `
-                <div class="result-item">
-                    <strong>${r.label}</strong><br>
-                    ${r.values.map(v => `• ${v}`).join('<br>')}
-                </div>
-            `).join('');
-        }
-        const thankYouMsg = document.createElement('p');
-        thankYouMsg.textContent = t.thankYou + ' ✅ Data saved!';
-        thankYouMsg.style.textAlign = 'center';
-        thankYouMsg.style.fontWeight = '600';
-        thankYouMsg.style.color = 'var(--primary-dark)';
-        thankYouMsg.style.marginTop = '16px';
-        resultsContent.appendChild(thankYouMsg);
-        document.getElementById('modalOverlay').classList.add('active');
-    } else {
-        alert('❌ Submission failed (status: ' + response.status + '). Please try again.');
+/* ================================================================
+   RENDER OPTIONS
+   ================================================================ */
+function renderOpts(){
+    const t=L[curLang];
+    for(let i=1;i<=14;i++){
+        const k='q'+i,cfg=Q[k],box=document.getElementById(k+'o');
+        if(!box||!t[k])continue;
+        const isRadio=cfg.type==='r',inpType=isRadio?'radio':'checkbox';
+        let html='';
+        t[k].forEach((o,idx)=>{
+            const isLast=cfg.other&&idx===t[k].length-1;
+            const isOtherOpt=isLast&&/^(Other|Sonstiges|Autre|Otro)$/i.test(o);
+            const val=isOtherOpt?'__other__':o;
+            html+='<label class="opt" for="'+k+'_'+idx+'">'
+                +'<input type="'+inpType+'" name="'+k+'" id="'+k+'_'+idx+'" value="'+escH(val)+'" onchange="onPick(this,\''+k+'\')">'
+                +'<span class="opt-icon">'+(isRadio?'○':'☐')+'</span>'
+                +'<span class="opt-text">'+o+'</span></label>';
+        });
+        box.innerHTML=html;
+        const or=document.getElementById(k+'_other');
+        if(or)or.classList.remove('open');
     }
-} catch (error) {
-    submitBtn.innerHTML = originalText;
-    submitBtn.disabled = false;
-    alert('❌ Network error. Please check your connection and try again.');
+}
+function escH(s){return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+
+/* ================================================================
+   SELECTION
+   ================================================================ */
+function onPick(el,qid){
+    const cfg=Q[qid],box=document.getElementById(qid+'o');
+    if(cfg.type==='r'){
+        box.querySelectorAll('.opt').forEach(o=>o.classList.remove('checked'));
+        el.closest('.opt').classList.add('checked');
+    } else {
+        const checked=box.querySelectorAll('input:checked');
+        if(checked.length>cfg.max){el.checked=false;return;}
+        box.querySelectorAll('.opt').forEach(o=>{
+            o.classList.toggle('checked',o.querySelector('input').checked);
+        });
+    }
+    if(cfg.other){
+        const or=document.getElementById(qid+'_other');
+        if(or){
+            const otherInp=box.querySelector('input[value="__other__"]');
+            or.classList.toggle('open',otherInp&&otherInp.checked);
+        }
+    }
+    updateProgress();
 }
 
-
-        function closeModal() {
-            document.getElementById('modalOverlay').classList.remove('active');
+/* ================================================================
+   PROGRESS
+   ================================================================ */
+function updateProgress(){
+    let total=17,done=0;
+    for(let i=1;i<=17;i++){
+        const k='q'+i,cfg=Q[k];
+        if(cfg.type==='t'){
+            const ta=document.getElementById(k+'ta');
+            if(ta&&ta.value.trim())done++;
+        } else {
+            const box=document.getElementById(k+'o');
+            if(box){
+                const c=box.querySelectorAll('input:checked');
+                if(c.length>0){
+                    let hasEmptyOther=false;
+                    c.forEach(inp=>{
+                        if(inp.value==='__other__'){
+                            const oi=document.getElementById(k+'_other_in');
+                            if(!oi||!oi.value.trim())hasEmptyOther=true;
+                        }
+                    });
+                    if(!hasEmptyOther)done++;
+                }
+            }
         }
+    }
+    const pct=Math.round(done/total*100);
+    document.getElementById('pFill').style.width=pct+'%';
+    document.getElementById('pPct').textContent=pct+'%';
+}
 
-        // Close modal on overlay click
-        document.getElementById('modalOverlay').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeModal();
+/* ================================================================
+   LANGUAGE SWITCH
+   ================================================================ */
+function setLang(lang){
+    curLang=lang;
+    const t=L[lang];
+    document.getElementById('h_title').textContent=t.h_title;
+    document.getElementById('h_desc').textContent=t.h_desc;
+    ['s1','s2','s3','s4','s5','s6'].forEach(s=>{
+        document.getElementById(s+'t').textContent=t[s+'t'];
+        document.getElementById(s+'s').textContent=t[s+'s'];
+    });
+    for(let i=1;i<=17;i++){
+        const k='q'+i;
+        document.getElementById(k+'t').textContent=t[k+'t'];
+        const h=document.getElementById(k+'h');
+        if(h)h.textContent=t[k+'h'];
+    }
+    document.getElementById('q15ta').placeholder=t.q15t;
+    document.getElementById('q16ta').placeholder=t.q16t;
+    document.getElementById('q17ta').placeholder=t.q17t;
+    for(let i=1;i<=14;i++){
+        const oi=document.getElementById('q'+i+'_other_in');
+        if(oi)oi.placeholder=t.other_ph;
+    }
+    document.getElementById('btnTxt').textContent=t.btn_submit;
+    document.getElementById('btnSub').textContent=t.btn_sub;
+    document.getElementById('mTitle').textContent=t.m_title;
+    document.getElementById('mClose').textContent=t.m_close;
+    document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelector('.lang-btn[onclick="setLang(\''+lang+'\')"]').classList.add('active');
+    renderOpts();updateProgress();
+}
+
+/* ================================================================
+   STATUS BANNER
+   ================================================================ */
+function showStatus(type,msg){
+    const b=document.getElementById('statusBanner');
+    const i=document.getElementById('statusIcon');
+    const m=document.getElementById('statusMsg');
+    b.className='status-banner show '+type;
+    i.textContent=type==='success'?'✅':'❌';
+    m.textContent=msg;
+    if(type==='success')setTimeout(()=>b.classList.remove('show'),5000);
+}
+
+/* ================================================================
+   COLLECT FORM DATA → FormData
+   ================================================================ */
+function collectFormData(){
+    const fd=new FormData();
+    fd.append('_subject','Chinese Learning Preferences Survey Response');
+    fd.append('_captcha','false');
+    fd.append('Submission_Time',new Date().toISOString());
+    fd.append('Language',curLang.toUpperCase());
+
+    // Checkboxes & radios
+    for(let i=1;i<=14;i++){
+        const k='q'+i,cfg=Q[k],box=document.getElementById(k+'o');
+        if(!box)continue;
+        const checked=box.querySelectorAll('input:checked');
+        const vals=[];
+        checked.forEach(inp=>{
+            if(inp.value==='__other__'){
+                const oi=document.getElementById(k+'_other_in');
+                if(oi&&oi.value.trim())vals.push('Other: '+oi.value.trim());
+            } else {
+                vals.push(inp.value);
             }
         });
+        if(vals.length)fd.append(k,vals.join(' | '));
+    }
 
-        // Close modal on Escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeModal();
-            }
+    // Textareas
+    ['q15','q16','q17'].forEach(k=>{
+        const ta=document.getElementById(k+'ta');
+        if(ta&&ta.value.trim())fd.append(k,ta.value.trim());
+    });
+
+    return fd;
+}
+
+/* ================================================================
+   SUBMIT — fetch to Formspree, only show success AFTER response
+   ================================================================ */
+async function submitForm(){
+    const btn=document.getElementById('submitBtn');
+    const t=L[curLang];
+
+    // Prevent double-submit
+    if(btn.disabled)return;
+    btn.disabled=true;
+    btn.classList.add('loading');
+    document.getElementById('btnTxt').textContent=t.sending;
+    // hide any previous banner
+    document.getElementById('statusBanner').classList.remove('show');
+
+    try{
+        const fd=collectFormData();
+
+        const resp=await fetch(ENDPOINT,{
+            method:'POST',
+            body:fd,
+            headers:{'Accept':'application/json'}
         });
 
-        // ==================== INITIALIZATION ====================
-        function init() {
-            renderAllOptions();
-            updateAllCounters();
-            updateProgress();
-        }
+        // *** ONLY show success AFTER we receive a confirmed response ***
+        if(resp.ok){
+            // Build summary for modal
+            const results=[];
+            for(let i=1;i<=17;i++){
+                const k='q'+i,cfg=Q[k];
+                const label=document.getElementById(k+'t').textContent;
+                if(cfg.type==='t'){
+                    const ta=document.getElementById(k+'ta');
+                    if(ta&&ta.value.trim())results.push({label,val:ta.value.trim()});
+                } else {
+                    const v=fd.get(k);
+                    if(v)results.push({label,val:v});
+                }
+            }
 
-        // Run on page load
-        init();
-    </script>
+            let html='';
+            if(results.length){
+                results.forEach(r=>{
+                    html+='<div class="result-row"><strong>'+r.label+'</strong><span>'+r.val+'</span></div>';
+                });
+            }
+            html+='<p style="text-align:center;font-weight:700;color:var(--primary-dark);margin-top:16px;">✅ '+t.send_success+'</p>';
+            document.getElementById('mBody').innerHTML=html;
+            document.getElementById('overlay').classList.add('show');
+
+            showStatus('success',t.send_success);
+
+            // Reset form visually
+            resetForm();
+        } else {
+            // Server responded with error
+            let errMsg=t.send_fail;
+            try{
+                const errBody=await resp.json();
+                if(errBody.error)errMsg+=' ('+errBody.error+')';
+            }catch(e){}
+            throw new Error(errMsg);
+        }
+    }catch(err){
+        console.error('Survey submit error:',err);
+        showStatus('error',err.message||t.send_fail);
+    }finally{
+        btn.disabled=false;
+        btn.classList.remove('loading');
+        document.getElementById('btnTxt').textContent=t.btn_submit;
+    }
+}
+
+/* ================================================================
+   RESET FORM (after successful submit)
+   ================================================================ */
+function resetForm(){
+    // Uncheck all
+    document.querySelectorAll('#surveyForm input:checked').forEach(inp=>inp.checked=false);
+    document.querySelectorAll('.opt.checked').forEach(o=>o.classList.remove('checked'));
+    // Close all other inputs
+    document.querySelectorAll('.other-row.open').forEach(r=>r.classList.remove('open'));
+    // Clear other text inputs
+    for(let i=1;i<=14;i++){
+        const oi=document.getElementById('q'+i+'_other_in');
+        if(oi)oi.value='';
+    }
+    // Clear textareas
+    ['q15ta','q16ta','q17ta'].forEach(id=>{
+        const ta=document.getElementById(id);
+        if(ta)ta.value='';
+    });
+    updateProgress();
+}
+
+/* ================================================================
+   MODAL
+   ================================================================ */
+function closeModal(){document.getElementById('overlay').classList.remove('show');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+/* ================================================================
+   INIT
+   ================================================================ */
+renderOpts();
+updateProgress();
+</script>
 </body>
 </html>
